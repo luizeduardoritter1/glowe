@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glowe — Telas: Agendamento · Cliente · Catálogo</title>
+<style>
+  :root{
+    --pg-bg:#EDE6EA; --pg-ink:#241B24; --pg-ink2:#6B5F68; --pg-ink3:#9B8F98; --pg-line:#DCD0D8;
+    --app-bg:#F5F1F3; --sf:#FFFFFF; --sf2:#F7F2F5;
+    --ink:#241B24; --ink2:#6B5F68; --ink3:#A093A0; --line:#ECE2E9;
+    --rose:#BC3C6A; --rose-ink:#8E2A50; --rose-soft:#F9E6EE; --rose-2:#E86A96;
+    --green:#1F9E6A; --green-soft:#E4F3EC; --wa:#25925a; --amber:#BE8A2A; --amber-soft:#F6ECD6; --blue:#3E6394; --blue-soft:#EAF0F7;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--pg-bg:#141017;--pg-ink:#EEE6EC;--pg-ink2:#B7ABB7;--pg-ink3:#847788;--pg-line:#2E2434;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;padding:clamp(20px,4vw,52px) clamp(14px,4vw,44px)}
+  svg{display:block}
+
+  .head{max-width:900px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:600;font-size:1.05rem}
+  .mark{width:22px;height:22px;border-radius:7px;background:radial-gradient(120% 120% at 30% 20%,var(--rose-2),var(--rose-ink));box-shadow:0 2px 8px -2px var(--rose)}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose-ink);margin:18px 0 4px}
+  @media (prefers-color-scheme:dark){.eyebrow{color:var(--rose-2)}}
+  .head h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.1;letter-spacing:-.01em;margin:0 0 .5rem;text-wrap:balance}
+  .lede{font-size:1.05rem;line-height:1.55;color:var(--pg-ink2);max-width:64ch}
+
+  .flow{display:flex;gap:22px;overflow-x:auto;padding:26px 2px 30px;scroll-snap-type:x proximity}
+  .stepwrap{scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;flex:none}
+  .steplabel{font-size:.85rem;font-weight:700;color:var(--pg-ink)}
+  .steplabel small{display:block;font-weight:400;color:var(--pg-ink3);font-size:.76rem;margin-top:2px;text-align:center}
+
+  .phone{width:300px;background:#1a1420;border-radius:40px;padding:9px;position:relative;box-shadow:0 26px 50px -26px rgba(60,20,45,.5)}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:100px;height:22px;background:#1a1420;border-radius:0 0 14px 14px;z-index:6}
+  .screen{background:var(--app-bg);border-radius:31px;overflow:hidden;height:618px;display:flex;flex-direction:column;font-size:13px;position:relative}
+  .sbar{display:flex;justify-content:space-between;padding:10px 20px 4px;font-size:11px;font-weight:600;color:var(--ink)}
+  .nav{display:flex;align-items:center;gap:10px;padding:6px 16px 12px;background:var(--sf);border-bottom:1px solid var(--line)}
+  .nav .back{width:30px;height:30px;border-radius:9px;background:var(--sf2);display:grid;place-items:center;border:1px solid var(--line)}
+  .nav .back svg{width:16px;height:16px;fill:none;stroke:var(--ink2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .nav h2{margin:0;font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink)}
+  .nav .plus{margin-left:auto;font-size:12px;font-weight:700;color:var(--rose-ink)}
+  .body{flex:1;overflow-y:auto;padding:14px 15px 82px}
+
+  .fld{margin-bottom:13px}
+  .fld label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+  .inp{background:var(--sf);border:1px solid var(--line);border-radius:11px;padding:11px 13px;font-size:13.5px;color:var(--ink);display:flex;align-items:center;justify-content:space-between}
+  .inp .mut{color:var(--ink3);font-size:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{font-size:12px;font-weight:600;padding:8px 13px;border-radius:22px;background:var(--sf);border:1px solid var(--line);color:var(--ink2)}
+  .chip.on{background:var(--rose-soft);border-color:var(--rose);color:var(--rose-ink)}
+  .who{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(140deg,var(--rose),var(--rose-ink));color:#fff;display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+  .who b{font-size:13.5px;color:var(--ink);display:block}
+  .who small{font-size:11px;color:var(--ink3)}
+  .row2{display:flex;gap:10px}.row2 .fld{flex:1}
+  .tog{display:flex;align-items:center;justify-content:space-between;background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .tog b{font-size:13px;color:var(--ink)}
+  .tog small{font-size:11px;color:var(--ink3);display:block}
+  .sw{width:42px;height:24px;border-radius:20px;background:var(--rose);position:relative;flex:none}
+  .sw.off{background:var(--line)}
+  .sw::after{content:"";position:absolute;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;right:2px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .sw.off::after{right:auto;left:2px}
+  .link-ev{display:flex;align-items:center;gap:8px;border:1px dashed var(--rose);color:var(--rose-ink);border-radius:12px;padding:11px 13px;font-size:12px;font-weight:600;margin-top:4px}
+  .note{font-size:11px;color:var(--ink3);background:var(--sf2);border-radius:10px;padding:9px 11px;line-height:1.45;margin-top:12px}
+
+  .foot{position:absolute;left:0;right:0;bottom:0;padding:12px 15px 20px;background:linear-gradient(0deg,var(--app-bg) 70%,transparent)}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:13px;padding:13px;font-family:var(--sans);font-size:14px;font-weight:700;color:#fff;background:linear-gradient(140deg,var(--rose),var(--rose-ink));box-shadow:0 10px 22px -8px var(--rose)}
+  .btn.wa{background:var(--wa)}
+  .btn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  /* client profile */
+  .cli-top{background:linear-gradient(160deg,var(--rose-ink),var(--rose));color:#fff;padding:16px 18px 18px;text-align:center}
+  .cli-top .av{width:60px;height:60px;font-size:22px;margin:0 auto 9px;background:rgba(255,255,255,.22)}
+  .cli-top h2{margin:0;font-family:var(--serif);font-size:20px;font-weight:600}
+  .cli-top .ph{font-size:12px;opacity:.85;margin:2px 0 8px}
+  .cli-tags{display:flex;gap:6px;justify-content:center}
+  .cli-tags span{font-size:10.5px;font-weight:700;background:rgba(255,255,255,.2);border-radius:14px;padding:3px 9px}
+  .cli-wa{display:flex;align-items:center;justify-content:center;gap:7px;background:rgba(255,255,255,.16);border-radius:11px;padding:9px;margin-top:12px;font-size:12.5px;font-weight:600}
+  .cli-wa svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2}
+  .stats{display:flex;background:var(--sf);border-bottom:1px solid var(--line)}
+  .stats div{flex:1;padding:11px 6px;text-align:center;border-right:1px solid var(--line)}
+  .stats div:last-child{border:none}
+  .stats b{display:block;font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .stats small{font-size:9.5px;color:var(--ink3)}
+  .sec-h{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin:14px 0 8px}
+  .ev-card{background:var(--rose-soft);border:1px solid var(--rose);border-radius:12px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center}
+  .ev-card b{font-size:13px;color:var(--rose-ink)}
+  .ev-card small{font-size:11px;color:var(--rose-ink);opacity:.8;display:block}
+  .ev-card .st{font-size:10px;background:var(--amber-soft);color:var(--amber);padding:3px 8px;border-radius:12px;font-weight:700}
+  .hist{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .hist .dt{width:40px;flex:none;text-align:center;font-size:10px;color:var(--ink3);line-height:1.2}
+  .hist .dt b{display:block;font-size:14px;color:var(--ink)}
+  .hist .mid{flex:1}
+  .hist .mid b{font-size:12.5px;color:var(--ink)}
+  .hist .mid small{font-size:10.5px;color:var(--ink3)}
+  .hist .v{font-size:12.5px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums}
+  .anam{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:11px 13px;font-size:12px;color:var(--ink2);line-height:1.5}
+  .anam b{color:var(--ink)}
+
+  /* catalog */
+  .seg{display:flex;gap:3px;background:var(--sf2);border:1px solid var(--line);border-radius:11px;padding:3px;margin-bottom:14px}
+  .seg b{flex:1;text-align:center;font-size:12px;font-weight:600;color:var(--ink2);padding:7px;border-radius:8px}
+  .seg b.on{background:var(--sf);color:var(--rose-ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .grp{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin:4px 0 8px}
+  .cat{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+  .cat .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:14px;flex:none}
+  .cat .ic.s{background:var(--rose-soft);color:var(--rose-ink)}
+  .cat .ic.a{background:var(--blue-soft);color:var(--blue)}
+  .cat .mid{flex:1;min-width:0}
+  .cat b{font-size:13px;color:var(--ink);display:block}
+  .cat small{font-size:10.5px;color:var(--ink3)}
+  .cat .pr{text-align:right;white-space:nowrap}
+  .cat .pr b{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+  .cat .pr small{font-size:9.5px;color:var(--ink3)}
+
+  .arrow{align-self:center;color:var(--pg-ink3);flex:none;display:flex;align-items:center}
+  .arrow svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .callout{max-width:900px;margin:8px auto 0;background:var(--sf);border:1px solid var(--pg-line);border-left:3px solid var(--rose);border-radius:0 12px 12px 0;padding:14px 18px;font-size:.92rem;color:var(--pg-ink2);line-height:1.55}
+  @media (prefers-color-scheme:dark){.callout{background:#1E1823}}
+  .callout b{color:var(--pg-ink)}
+  .foot-note{max-width:900px;margin:24px auto 0;font-size:.82rem;color:var(--pg-ink3);text-align:center}
+  ::selection{background:var(--rose);color:#fff}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="brand"><span class="mark"></span>Glowe <span style="font:600 .6rem var(--mono);letter-spacing:.14em;color:var(--pg-ink3);text-transform:uppercase;align-self:center">· codinome</span></div>
+  <p class="eyebrow">Telas do núcleo · Task #2</p>
+  <h1>Novo agendamento · Ficha do cliente · Catálogo</h1>
+  <p class="lede">As três telas que completam o coração do app: o caminho rápido do dia a dia, o histórico completo de cada cliente e o cardápio de serviços &amp; adicionais. Role a faixa para ver cada uma.</p>
+</header>
+
+<div class="flow">
+
+  <!-- 1 — NOVO AGENDAMENTO -->
+  <div class="stepwrap">
+    <div class="steplabel">Novo agendamento<small>o caminho rápido (o “átomo”)</small></div>
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="sbar"><span>9:41</span><span>▮▮▮ ᯤ 🔋</span></div>
+      <div class="nav"><div class="back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div><h2>Novo agendamento</h2></div>
+      <div class="body">
+        <div class="fld"><label>Cliente</label><div class="who"><span class="av">C</span><div><b>Carla Souza</b><small>Cliente desde 2024</small></div></div></div>
+        <div class="fld"><label>Serviço</label><div class="chips"><span class="chip on">Penteado</span><span class="chip">Maquiagem</span><span class="chip" style="border-style:dashed;color:var(--rose-ink)">+ catálogo</span></div></div>
+        <div class="row2">
+          <div class="fld"><label>Data</label><div class="inp">Sáb, 12 jul <span class="mut">📅</span></div></div>
+          <div class="fld"><label>Hora</label><div class="inp">09:00</div></div>
+        </div>
+        <div class="fld"><label>Local</label>
+          <div class="chips" style="margin-bottom:8px"><span class="chip">Estúdio</span><span class="chip on">Domicílio</span></div>
+          <div class="inp">Rua das Flores, 120 · Centro</div>
+        </div>
+        <div class="row2">
+          <div class="fld"><label>Duração</label><div class="inp">1h <span class="mut">auto</span></div></div>
+          <div class="fld"><label>Valor</label><div class="inp">R$ 180 <span class="mut">auto</span></div></div>
+        </div>
+        <div class="tog" style="margin-bottom:12px"><div><b>Lembrete no WhatsApp</b><small>1 dia antes · semiautomático</small></div><span class="sw"></span></div>
+        <div class="link-ev">◆ Faz parte de um evento? Vincular</div>
+        <p class="note">💡 Para o dia a dia, é só isto — cliente, serviço, quando. <b>O evento é opcional</b> e só aparece quando ela precisa.</p>
+      </div>
+      <div class="foot"><button class="btn">Salvar agendamento</button></div>
+    </div></div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+
+  <!-- 2 — FICHA DO CLIENTE -->
+  <div class="stepwrap">
+    <div class="steplabel">Ficha do cliente<small>histórico &amp; relacionamento</small></div>
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="sbar"><span>9:41</span><span>▮▮▮ ᯤ 🔋</span></div>
+      <div class="cli-top">
+        <div class="av">J</div>
+        <h2>Júlia Mendes</h2>
+        <p class="ph">(11) 9 8888-1234 · 🎂 20 mar</p>
+        <div class="cli-tags"><span>Noiva</span><span>VIP</span><span>Indicação</span></div>
+        <div class="cli-wa"><svg viewBox="0 0 24 24"><path d="M4 20l1.5-4A8 8 0 1120 12a8 8 0 01-14.5 4.5z"/></svg> Chamar no WhatsApp</div>
+      </div>
+      <div class="stats">
+        <div><b>4</b><small>atendimentos</small></div>
+        <div><b>R$ 2.300</b><small>total gasto</small></div>
+        <div><b>12 jul</b><small>última visita</small></div>
+      </div>
+      <div class="body" style="padding-top:8px">
+        <div class="sec-h">Próximo</div>
+        <div class="ev-card"><div><b>◆ Casamento da Júlia</b><small>15 nov · Gramado</small></div><span class="st">Sinal pago</span></div>
+        <div class="sec-h">Histórico</div>
+        <div class="hist"><div class="dt"><b>12</b>jul</div><div class="mid"><b>Maquiagem social</b><small>Estúdio</small></div><span class="v">R$ 220</span></div>
+        <div class="hist"><div class="dt"><b>28</b>mai</div><div class="mid"><b>Penteado</b><small>Domicílio</small></div><span class="v">R$ 250</span></div>
+        <div class="hist"><div class="dt"><b>14</b>fev</div><div class="mid"><b>Maquiagem + penteado</b><small>Evento</small></div><span class="v">R$ 480</span></div>
+        <div class="sec-h">Anamnese &amp; notas</div>
+        <div class="anam"><b>Pele:</b> mista, sensível na zona T. <b>Alergia:</b> níquel. <b>Prefere:</b> tons neutros, pele natural. Gosta de chegar 15min antes.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+
+  <!-- 3 — CATÁLOGO -->
+  <div class="stepwrap">
+    <div class="steplabel">Catálogo<small>serviços + adicionais (item unificado)</small></div>
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="sbar"><span>9:41</span><span>▮▮▮ ᯤ 🔋</span></div>
+      <div class="nav"><div class="back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div><h2>Catálogo</h2><span class="plus">＋ Novo</span></div>
+      <div class="body">
+        <div class="seg"><b class="on">Todos</b><b>Serviços</b><b>Adicionais</b></div>
+        <div class="grp">Serviços · ocupam a agenda</div>
+        <div class="cat"><span class="ic s">✦</span><div class="mid"><b>Maquiagem social</b><small>1h</small></div><div class="pr"><b>R$ 220</b></div></div>
+        <div class="cat"><span class="ic s">✦</span><div class="mid"><b>Maquiagem noiva</b><small>1h30</small></div><div class="pr"><b>R$ 350</b></div></div>
+        <div class="cat"><span class="ic s">✦</span><div class="mid"><b>Penteado</b><small>1h</small></div><div class="pr"><b>R$ 250</b></div></div>
+        <div class="grp" style="margin-top:14px">Adicionais · não ocupam a agenda</div>
+        <div class="cat"><span class="ic a">＋</span><div class="mid"><b>Coffee break</b><small>custo insumos</small></div><div class="pr"><b>R$ 300</b></div></div>
+        <div class="cat"><span class="ic a">＋</span><div class="mid"><b>Filmagem do preparo</b><small>parceira</small></div><div class="pr"><b>R$ 500</b><small>custo R$ 200</small></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+
+  <!-- 4 — ITEM DETAIL -->
+  <div class="stepwrap">
+    <div class="steplabel">Editar item<small>como o item unificado funciona</small></div>
+    <div class="phone"><div class="notch"></div><div class="screen">
+      <div class="sbar"><span>9:41</span><span>▮▮▮ ᯤ 🔋</span></div>
+      <div class="nav"><div class="back"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div><h2>Editar item</h2></div>
+      <div class="body">
+        <div class="fld"><label>Nome</label><div class="inp">Filmagem do preparo</div></div>
+        <div class="fld"><label>Tipo</label><div class="chips"><span class="chip">Serviço</span><span class="chip on">Adicional</span></div></div>
+        <div class="row2">
+          <div class="fld"><label>Preço de venda</label><div class="inp">R$ 500</div></div>
+          <div class="fld"><label>Custo</label><div class="inp">R$ 200</div></div>
+        </div>
+        <p class="note" style="margin-top:0">O <b>custo</b> (repasse à parceira) é usado só pra calcular seu <b>lucro real</b> — não aparece pra cliente.</p>
+        <div class="tog" style="margin:13px 0"><div><b>Ocupa horário na agenda?</b><small>adicionais geralmente não</small></div><span class="sw off"></span></div>
+        <div class="fld"><label>Duração</label><div class="inp" style="opacity:.5">— <span class="mut">só se ocupar agenda</span></div></div>
+        <p class="note">Um único cadastro serve pra <b>serviço e adicional</b>. A diferença é só “ocupa agenda?”.</p>
+      </div>
+      <div class="foot"><button class="btn">Salvar item</button></div>
+    </div></div>
+  </div>
+
+</div>
+
+<div class="callout">
+  <b>Repare na coerência com o que decidimos:</b> o novo agendamento tem o botão discreto <b>“Vincular a um evento”</b> (o modelo híbrido), o valor e a duração vêm <b>automáticos do catálogo</b>, e a tela de item mostra o <b>item unificado</b> (tipo + custo + “ocupa agenda?”) que resolve o caso da filmagem/coffee break sem gestão de equipe.
+</div>
+
+<p class="foot-note"><b>Maquete não-funcional</b> — role a faixa na horizontal. Valores e dados são ilustrativos.</p>
+
+</body>
+</html>

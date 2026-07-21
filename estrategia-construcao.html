@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glowe — Estratégia de Construção</title>
+<style>
+  :root{
+    --bg:#EDE6EA; --sf:#FFFFFF; --sf2:#F6F0F3; --ink:#241B24; --ink2:#5F5560; --ink3:#948995; --line:#DFD4DB;
+    --rose:#BC3C6A; --rose-ink:#8E2A50; --rose-soft:#F9E6EE;
+    --green:#1F9E6A; --green-soft:#E4F3EC; --red:#C64A3C; --red-soft:#F8E7E3; --amber:#B0791E; --amber-soft:#F6ECD6; --blue:#3E6394; --blue-soft:#EAF0F7;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#141017;--sf:#1E1823;--sf2:#251E2B;--ink:#EEE6EC;--ink2:#BAAFBA;--ink3:#877B88;--line:#312738;--rose-soft:#3A2130;--green-soft:#1E3229;--red-soft:#33201C;--amber-soft:#33290F;--blue-soft:#1B2636;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;padding:clamp(22px,4vw,54px) clamp(16px,4vw,40px)}
+  .wrap{max-width:800px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:600;font-size:1.05rem}
+  .mark{width:22px;height:22px;border-radius:7px;background:radial-gradient(120% 120% at 30% 20%,#E86A96,var(--rose-ink));box-shadow:0 2px 8px -2px var(--rose)}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose-ink);margin:18px 0 4px}
+  @media (prefers-color-scheme:dark){.eyebrow{color:#E86A96}}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;letter-spacing:-.01em;margin:.3rem 0 .5rem;text-wrap:balance}
+  .lede{font-size:1.1rem;color:var(--ink2);line-height:1.5;max-width:62ch}
+  .disc{font-size:.86rem;color:var(--ink3);border-left:2px solid var(--line);padding-left:14px;margin-top:16px;max-width:60ch}
+
+  section{margin-top:32px;background:var(--sf);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .knum{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--rose-ink);text-transform:uppercase}
+  h2{font-family:var(--serif);font-weight:600;font-size:1.46rem;line-height:1.14;margin:.3rem 0 .7rem;text-wrap:balance}
+  h3{font-size:1.02rem;font-weight:700;margin:1.4rem 0 .5rem}
+  p{margin:0 0 .85rem}
+  strong{color:var(--ink)}
+  .scroll{overflow-x:auto;margin:.6rem 0}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+  td:first-child{font-weight:600;white-space:nowrap}
+  .rec{background:var(--green-soft);border:1px solid var(--green);border-radius:12px;padding:14px 18px;margin:12px 0;font-size:.95rem}
+  .rec b{color:var(--ink)}
+  .rec .tag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;background:var(--green);color:#fff;padding:2px 9px;border-radius:20px;margin-bottom:6px}
+  .warn{background:var(--amber-soft);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:0 12px 12px 0;padding:13px 18px;margin:12px 0;font-size:.93rem}
+  .warn b{color:var(--ink)}
+  ul{margin:.3rem 0 .9rem;padding-left:22px;display:flex;flex-direction:column;gap:7px}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px}
+  .p-rec{background:var(--rose-soft);color:var(--rose-ink)}
+  .p-alt{background:var(--blue-soft);color:var(--blue)}
+  .p-no{background:var(--red-soft);color:var(--red)}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .card{background:var(--sf2);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+  .card h4{margin:0 0 4px;font-size:.98rem}
+  .card .meta{font-size:.78rem;color:var(--ink3);margin-bottom:8px}
+  .card p{font-size:.88rem;margin:0}
+
+  .stack{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .layer{display:flex;align-items:center;gap:12px;background:var(--sf2);border:1px solid var(--line);border-radius:12px;padding:12px 15px}
+  .layer .li{width:34px;height:34px;border-radius:9px;background:var(--rose-soft);color:var(--rose-ink);display:grid;place-items:center;font-size:16px;flex:none}
+  .layer b{display:block;font-size:.95rem}
+  .layer small{font-size:.82rem;color:var(--ink3)}
+
+  ol.phases{counter-reset:p;list-style:none;padding:0;margin:.4rem 0;display:flex;flex-direction:column;gap:12px}
+  ol.phases li{counter-increment:p;position:relative;padding:2px 0 2px 46px}
+  ol.phases li::before{content:counter(p);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-weight:700}
+  ol.phases b{color:var(--ink)}
+  ol.phases .wk{font-family:var(--mono);font-size:.72rem;color:var(--rose-ink);margin-left:8px}
+
+  .foot{margin-top:30px;font-size:.85rem;color:var(--ink3);text-align:center}
+  @media(max-width:600px){.cards{grid-template-columns:1fr}}
+  ::selection{background:var(--rose);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><span class="mark"></span>Glowe <span style="font:600 .6rem var(--mono);letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;align-self:center">· codinome</span></div>
+  <p class="eyebrow">Estratégia de construção · Task #5</p>
+  <h1>Como transformar isso em produto real</h1>
+  <p class="lede">Sem escrever código ainda — só as decisões que definem <strong>custo, prazo e viabilidade</strong> para construir web + iOS + Android com um time pequeno e orçamento enxuto.</p>
+  <p class="disc">⚠️ Isto é um mapa de decisão em nível estratégico. Os números de tempo/custo são estimativas de ordem de grandeza para você se planejar — a palavra final é de quem for construir.</p>
+
+  <section>
+    <p class="knum">01 · Visão geral</p>
+    <h2>As 4 decisões que definem tudo</h2>
+    <div class="scroll"><table>
+      <tr><th>Decisão</th><th>Recomendação enxuta</th><th>Por quê</th></tr>
+      <tr><td>Como fazer os apps</td><td>1 código para os 3 (cross-platform)</td><td>Evita construir e manter 3 vezes</td></tr>
+      <tr><td>Backend</td><td>BaaS pronto (Supabase)</td><td>Não reinventar login, banco, storage</td></tr>
+      <tr><td>Pagamento do sinal</td><td>Gateway Pix brasileiro</td><td>Pix é o que a cliente usa; barato</td></tr>
+      <tr><td>Quem constrói</td><td>1 dev focado (ou você + IA)</td><td>Escopo enxuto cabe em time mínimo</td></tr>
+    </table></div>
+    <p>O fio condutor: <strong>comprar pronto tudo que não é o nosso diferencial</strong> (login, banco, pagamento) e gastar energia só no que nos torna únicos (agenda, evento, orçamento, financeiro).</p>
+  </section>
+
+  <section>
+    <p class="knum">02 · A decisão principal</p>
+    <h2>Web + iOS + Android sem construir 3 vezes</h2>
+    <p>Fazer três apps nativos separados (Swift + Kotlin + web) é 3× o trabalho — inviável no começo. A saída é <strong>um código só que roda nas três plataformas</strong>. As opções reais:</p>
+    <div class="scroll"><table>
+      <tr><th>Abordagem</th><th>Prós</th><th>Contras</th></tr>
+      <tr><td>Flutter <span class="pill p-rec">Recomendo</span></td><td>1 código → iOS, Android e web; UI linda e idêntica em todos (combina com nosso “padrão americano”); rápido; devs acessíveis no BR</td><td>Web é o alvo mais fraco do Flutter (ok para o painel logado, não para páginas públicas)</td></tr>
+      <tr><td>React Native + Expo <span class="pill p-alt">Alternativa</span></td><td>Ecossistema JavaScript (mais gente pra contratar); web via RN-Web; atualização OTA</td><td>UI menos “pixel-perfect” entre plataformas; alguns recursos nativos dão mais trabalho</td></tr>
+      <tr><td>Só PWA (web-first)</td><td>Mais barato e rápido; 1 código</td><td>Sem presença nas lojas (discoverability!); iOS limita PWA; parece menos “app de verdade”</td></tr>
+      <tr><td>3 apps nativos <span class="pill p-no">Evitar agora</span></td><td>Melhor experiência possível por plataforma</td><td>3× custo e prazo; inviável para começar</td></tr>
+    </table></div>
+
+    <div class="rec"><span class="tag">Minha recomendação</span><br><b>Flutter para o app</b> (o painel que a profissional usa, em iOS/Android/web, de um código só). É a melhor relação entre custo, velocidade e a qualidade visual que a gente quer. Se quem for construir já domina JavaScript, <b>React Native/Expo</b> é uma escolha igualmente defensável — nesse caso, vá por ela.</div>
+
+    <div class="warn"><b>Insight — “a web tem duas caras”:</b> o <b>painel logado</b> (Marina no desktop) pode ser Flutter/RN. Mas as <b>páginas públicas</b> — a landing de marketing e principalmente o <b>link do orçamento que a noiva abre</b> — precisam carregar rápido e aparecer no Google. Essas valem a pena fazer como <b>páginas web leves</b> à parte, não dentro do app pesado. Pequeno detalhe, grande diferença na experiência da cliente.</div>
+  </section>
+
+  <section>
+    <p class="knum">03 · Backend</p>
+    <h2>Não construa o que já existe pronto</h2>
+    <p>Login, banco de dados, armazenamento de fotos, permissões — tudo isso é resolvido por um <strong>BaaS (Backend-as-a-Service)</strong>. Poupa meses de trabalho.</p>
+    <div class="cards">
+      <div class="card"><h4>Supabase <span class="pill p-rec">Recomendo</span></h4><div class="meta">Postgres · Auth · Storage · Realtime</div><p>Banco SQL de verdade, com “row-level security” — perfeito pro nosso modelo multi-tenant (o dado de uma profissional nunca vaza pra outra). Tem plano grátis generoso.</p></div>
+      <div class="card"><h4>Firebase <span class="pill p-alt">Alternativa</span></h4><div class="meta">NoSQL · Auth · Functions</div><p>Do Google, muito maduro e integra fácil com apps. Bom, mas o banco NoSQL é menos natural pros nossos relatórios financeiros que o SQL do Supabase.</p></div>
+    </div>
+    <p style="margin-top:12px">Com um BaaS, o "backend" que a gente realmente escreve é pouco — só as regras de negócio específicas nossas.</p>
+  </section>
+
+  <section>
+    <p class="knum">04 · Os custos escondidos</p>
+    <h2>O que ninguém te conta que custa</h2>
+    <div class="scroll"><table>
+      <tr><th>Item</th><th>Custo</th><th>Observação</th></tr>
+      <tr><td>Loja Apple</td><td>US$ 99 / ano</td><td>Obrigatório pra publicar no iPhone</td></tr>
+      <tr><td>Loja Google</td><td>US$ 25 (uma vez)</td><td>Pagamento único</td></tr>
+      <tr><td>Pix / sinal</td><td>~1% por transação</td><td>Via gateway BR (Mercado Pago, Asaas, Pagar.me). Barato e o que a cliente usa</td></tr>
+      <tr><td>Lembrete WhatsApp</td><td><b>R$ 0</b> (semiauto) </td><td>Modo <code>wa.me</code> é grátis. O automático (API Meta) custa por mensagem — Fase 2</td></tr>
+      <tr><td>Push notifications</td><td>Grátis</td><td>FCM/APNs — nativo, sem custo</td></tr>
+      <tr><td>Backend / hospedagem</td><td>R$ 0 → escala</td><td>Supabase começa grátis; paga só quando crescer</td></tr>
+      <tr><td>IA (criativo/contrato)</td><td>Por uso</td><td>Fase 2 — mora no plano premium pra se pagar</td></tr>
+    </table></div>
+    <p><strong>Tradução:</strong> pra <em>lançar</em> o MVP, o custo fixo real é quase só as lojas (~R$ 700 no 1º ano) + seu tempo/dev. O resto escala junto com a receita. 👌</p>
+  </section>
+
+  <section>
+    <p class="knum">05 · Quem constrói</p>
+    <h2>Os caminhos possíveis</h2>
+    <div class="scroll"><table>
+      <tr><th>Caminho</th><th>Custo aprox.</th><th>Prós / Contras</th></tr>
+      <tr><td>Você + IA (Claude Code)</td><td>$ (só seu tempo)</td><td>Mais barato e você aprende o produto a fundo · exige tempo e disposição técnica</td></tr>
+      <tr><td>1 dev freelancer</td><td>$$</td><td>Foco e velocidade · precisa de alguém de confiança e bom acompanhamento</td></tr>
+      <tr><td>Estúdio / agência</td><td>$$$$</td><td>Time completo, entrega “pronta” · caro e menos controle/alma no produto</td></tr>
+      <tr><td>Cofundador técnico</td><td>% (equity)</td><td>Compromisso de longo prazo · você divide a empresa; difícil de achar o certo</td></tr>
+    </table></div>
+    <div class="warn"><b>Dado o escopo enxuto que desenhamos</b> (BaaS + 1 código cross-platform), o MVP é perfeitamente factível com <b>1 pessoa focada</b> — seja um freelancer bom, seja você construindo com IA. Não precisa de um time grande pra começar. A Nicoli e as amigas seguram a validação; você segura o produto.</div>
+  </section>
+
+  <section>
+    <p class="knum">06 · Fases de execução</p>
+    <h2>A ordem de construir (técnica)</h2>
+    <ol class="phases">
+      <li><b>Fundação</b> <span class="wk">~2 sem</span><br>Contas (Supabase, lojas), autenticação, modelo de dados multi-tenant, design system a partir dos mockups.</li>
+      <li><b>Núcleo mobile</b> <span class="wk">~4–6 sem</span><br>Agenda (o átomo), Clientes, Catálogo, Financeiro simples. O caminho rápido do dia a dia funcionando.</li>
+      <li><b>O diferencial</b> <span class="wk">~3–4 sem</span><br>Evento + Orçamento + orçamento enviável (página web leve) + sinal via Pix.</li>
+      <li><b>Web + polimento + lojas</b> <span class="wk">~3–4 sem</span><br>Painel desktop, lembrete <code>wa.me</code>, ajustes finais, publicação nas lojas.</li>
+    </ol>
+    <p style="margin-top:6px"><strong>Ordem de grandeza:</strong> um MVP publicável em torno de <strong>3–4 meses</strong> com 1 pessoa focada. É estimativa grossa pra planejamento — não uma promessa.</p>
+  </section>
+
+  <section>
+    <p class="knum">07 · Cuidado sério</p>
+    <h2>LGPD &amp; dados sensíveis</h2>
+    <p>Isto não é burocracia opcional: a <strong>anamnese</strong> (alergias, condições de pele) é <strong>dado de saúde</strong> — categoria <em>sensível</em> pela LGPD. Você vai guardar dados pessoais de clientes das suas usuárias (nome, telefone, e possivelmente CPF pra nota/Pix).</p>
+    <ul>
+      <li><strong>Isolamento por profissional</strong> (multi-tenant com row-level security) — já previsto no nosso modelo. Essencial.</li>
+      <li><strong>Consentimento e política de privacidade</strong> claros no onboarding.</li>
+      <li><strong>Direito de exclusão</strong> — a profissional (e o cliente dela) poder apagar os dados.</li>
+    </ul>
+    <div class="warn"><b>Não trava o MVP</b>, mas precisa ser desenhado desde o início (não é coisa pra "colar depois"). Vale uma consultoria jurídica rápida antes do lançamento público.</div>
+  </section>
+
+  <section>
+    <p class="knum">08 · Resumo</p>
+    <h2>O “stack enxuto” recomendado</h2>
+    <div class="stack">
+      <div class="layer"><span class="li">📱</span><div><b>App (iOS · Android · web)</b><small>Flutter — 1 código para os 3 · (ou React Native/Expo se o time for JS)</small></div></div>
+      <div class="layer"><span class="li">🌐</span><div><b>Páginas públicas</b><small>Web leve à parte — landing + link do orçamento (rápido e no Google)</small></div></div>
+      <div class="layer"><span class="li">⚙️</span><div><b>Backend</b><small>Supabase — banco, login, storage, multi-tenant prontos</small></div></div>
+      <div class="layer"><span class="li">💳</span><div><b>Sinal</b><small>Gateway Pix brasileiro (Mercado Pago / Asaas / Pagar.me)</small></div></div>
+      <div class="layer"><span class="li">🔔</span><div><b>Avisos</b><small>Push grátis (FCM/APNs) + lembrete WhatsApp via <code>wa.me</code></small></div></div>
+    </div>
+    <div class="rec" style="margin-top:16px"><span class="tag">A grande sacada</span><br>Com esse arranjo, quase tudo que não é o nosso diferencial vem <b>pronto e barato</b>. O time gasta energia só no que torna o Glowe único — e um MVP publicável cabe em <b>~3–4 meses com 1 pessoa</b>. Enxuto, defensável e escalável.</div>
+  </section>
+
+  <p class="foot">Estratégia de construção · Glowe (codinome) · estimativas de planejamento, a refinar com quem construir.</p>
+
+</div>
+</body>
+</html>

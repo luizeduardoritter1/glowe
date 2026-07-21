@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glowe — Kit de Validação com Profissionais</title>
+<style>
+  :root{
+    --bg:#EDE6EA; --sf:#FFFFFF; --sf2:#F6F0F3; --ink:#241B24; --ink2:#5F5560; --ink3:#948995; --line:#DFD4DB;
+    --rose:#BC3C6A; --rose-ink:#8E2A50; --rose-soft:#F9E6EE;
+    --green:#1F9E6A; --green-soft:#E4F3EC; --red:#C64A3C; --red-soft:#F8E7E3; --amber:#B0791E; --amber-soft:#F6ECD6;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#141017;--sf:#1E1823;--sf2:#251E2B;--ink:#EEE6EC;--ink2:#BAAFBA;--ink3:#877B88;--line:#312738;--rose-soft:#3A2130;--green-soft:#1E3229;--red-soft:#33201C;--amber-soft:#33290F;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;padding:clamp(22px,4vw,54px) clamp(16px,4vw,40px)}
+  .wrap{max-width:760px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:600;font-size:1.05rem}
+  .mark{width:22px;height:22px;border-radius:7px;background:radial-gradient(120% 120% at 30% 20%,#E86A96,var(--rose-ink));box-shadow:0 2px 8px -2px var(--rose)}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose-ink);margin:18px 0 4px}
+  @media (prefers-color-scheme:dark){.eyebrow{color:#E86A96}}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;letter-spacing:-.01em;margin:.3rem 0 .5rem;text-wrap:balance}
+  .lede{font-size:1.12rem;color:var(--ink2);line-height:1.5;max-width:60ch}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+  .meta span{font-size:.8rem;background:var(--sf);border:1px solid var(--line);border-radius:20px;padding:5px 13px;color:var(--ink2)}
+  .meta b{color:var(--ink)}
+
+  section{margin-top:34px;background:var(--sf);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .knum{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--rose-ink);text-transform:uppercase}
+  h2{font-family:var(--serif);font-weight:600;font-size:1.42rem;line-height:1.15;margin:.3rem 0 .8rem;text-wrap:balance}
+  h3{font-size:1rem;font-weight:700;margin:1.3rem 0 .5rem;color:var(--ink)}
+  p{margin:0 0 .8rem}
+  .sub{color:var(--ink2)}
+
+  .gold{background:var(--amber-soft);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:0 12px 12px 0;padding:14px 18px;margin:6px 0}
+  .gold b{color:var(--ink)}
+  ul{margin:.3rem 0 .9rem;padding-left:22px;display:flex;flex-direction:column;gap:7px}
+  ul.plain{list-style:none;padding-left:0}
+  ul.plain li{padding-left:26px;position:relative}
+  ul.plain li::before{content:"›";position:absolute;left:6px;color:var(--rose);font-weight:700}
+  .q{background:var(--sf2);border-radius:10px;padding:11px 14px;margin:7px 0;font-size:.97rem}
+  .q::before{content:"“ ";color:var(--rose)}
+  .q::after{content:" ”";color:var(--rose)}
+
+  .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .dd{border-radius:12px;padding:14px 16px;font-size:.92rem}
+  .dd.do{background:var(--green-soft);border:1px solid var(--green)}
+  .dd.dont{background:var(--red-soft);border:1px solid var(--red)}
+  .dd h4{margin:0 0 8px;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
+  .dd.do h4{color:var(--green)}.dd.dont h4{color:var(--red)}
+  .dd ul{gap:6px;padding-left:18px;margin:0}
+
+  .steps{counter-reset:s;list-style:none;padding:0;margin:.4rem 0;display:flex;flex-direction:column;gap:10px}
+  .steps li{counter-increment:s;position:relative;padding-left:40px}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:27px;height:27px;border-radius:50%;background:var(--rose);color:#fff;display:grid;place-items:center;font-size:.85rem;font-weight:700}
+  .steps b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
+  .scroll{overflow-x:auto}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+  td:first-child{font-weight:600;white-space:nowrap}
+
+  .signals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sig{border-radius:12px;padding:14px 16px}
+  .sig.g{background:var(--green-soft);border:1px solid var(--green)}
+  .sig.r{background:var(--red-soft);border:1px solid var(--red)}
+  .sig h4{margin:0 0 8px;font-size:.9rem}
+  .sig.g h4{color:var(--green)}.sig.r h4{color:var(--red)}
+  .sig ul{margin:0;padding-left:18px;gap:6px;font-size:.9rem}
+
+  .capture{background:var(--sf2);border:1px dashed var(--line);border-radius:12px;padding:8px 16px}
+  .capture .line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+  .capture .line:last-child{border:none}
+  .capture .line span:first-child{color:var(--ink2);font-weight:600}
+  .capture .line span:last-child{color:var(--ink3);flex:1;text-align:right;border-bottom:1px solid var(--line);margin-left:12px}
+
+  .foot{margin-top:30px;font-size:.85rem;color:var(--ink3);text-align:center}
+  @media(max-width:600px){.do-dont,.signals{grid-template-columns:1fr}}
+  ::selection{background:var(--rose);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><span class="mark"></span>Glowe <span style="font:600 .6rem var(--mono);letter-spacing:.14em;color:var(--ink3);text-transform:uppercase;align-self:center">· codinome</span></div>
+  <p class="eyebrow">Kit de validação · Task #3</p>
+  <h1>Conversando com as profissionais</h1>
+  <p class="lede">Um roteiro para descobrir se o problema é real e se a nossa solução faz sentido — <b>antes</b> de escrever código. O objetivo não é ouvir “que legal”, é entender a rotina e as dores de verdade.</p>
+  <div class="meta"><span>👥 <b>5 a 8</b> profissionais</span><span>⏱️ <b>30–40 min</b> cada</span><span>💬 <b>1:1</b>, presencial ou vídeo</span><span>🎯 Beachhead: <b>maquiadora/penteadista</b></span></div>
+
+  <section>
+    <p class="knum">00 · A regra que decide tudo</p>
+    <h2>Como não enviesar (o erro nº 1 da validação)</h2>
+    <p>Se você <b>apresentar a ideia e perguntar “gostou?”</b>, todas vão dizer que sim — por educação. Isso não é validação, é ilusão. O segredo: <b>fale sobre o problema e o passado dela antes de mostrar qualquer solução.</b></p>
+    <div class="do-dont">
+      <div class="dd do"><h4>✓ Faça</h4><ul>
+        <li>Ouça 80%, fale 20%</li>
+        <li>Pergunte sobre o que ela <b>já faz/fez</b>, não sobre hipóteses</li>
+        <li>Peça <b>histórias concretas</b> (“me conta a última vez que…”)</li>
+        <li>Aguente o silêncio — é onde vem a verdade</li>
+        <li>Anote as <b>frases dela</b>, literais</li>
+      </ul></div>
+      <div class="dd dont"><h4>✕ Evite</h4><ul>
+        <li>“Você usaria um app que…?” (hipótese = mentira educada)</li>
+        <li>Defender ou vender a ideia</li>
+        <li>Perguntas de sim/não</li>
+        <li>Sugerir a resposta (“não é chato fazer isso na mão?”)</li>
+        <li>Mostrar o mockup <b>antes</b> de entender a dor</li>
+      </ul></div>
+    </div>
+    <div class="gold"><b>Troca de ouro:</b> em vez de <i>“você usaria um orçamento digital?”</i>, pergunte <i>“como você fez o orçamento da sua última noiva? me mostra?”</i>. O comportamento passado revela a verdade; a opinião sobre o futuro, não.</div>
+  </section>
+
+  <section>
+    <p class="knum">01 · Aquecimento</p>
+    <h2>Contexto e rotina</h2>
+    <p class="sub">Deixe ela confortável e entenda o negócio dela.</p>
+    <ul class="plain">
+      <li>Há quanto tempo você trabalha com isso? Como começou?</li>
+      <li>Quantos atendimentos você faz por semana, mais ou menos?</li>
+      <li>Como é um dia típico seu? E um dia de evento?</li>
+      <li>Você atende mais no estúdio, em domicílio, ou nos dois?</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="knum">02 · Dores atuais <span style="color:var(--ink3)">(ainda sem mostrar nada!)</span></p>
+    <h2>Onde dói hoje</h2>
+    <p class="sub">O coração da entrevista. Cave fundo em cada história.</p>
+    <h3>Agenda &amp; organização</h3>
+    <div class="q">Como você controla seus horários hoje? Me mostra?</div>
+    <div class="q">Já perdeu ou esqueceu um agendamento? Conta o que aconteceu.</div>
+    <h3>Dinheiro</h3>
+    <div class="q">Como você sabe quanto ganhou no mês? E quanto sobrou de lucro?</div>
+    <div class="q">Você controla suas despesas (material, deslocamento)? Como?</div>
+    <h3>Eventos, orçamento &amp; sinal (nosso diferencial)</h3>
+    <div class="q">Me conta como foi fechar sua última noiva, do primeiro contato até o dia.</div>
+    <div class="q">Como você monta e envia um orçamento? Cobra sinal? Como controla o que já foi pago?</div>
+    <div class="q">Você usa contrato? Já teve problema de cancelamento em cima da hora?</div>
+    <h3>Clientes</h3>
+    <div class="q">Como você lembra das preferências, alergias e histórico de cada cliente?</div>
+  </section>
+
+  <section>
+    <p class="knum">03 · Ferramentas &amp; dinheiro de hoje</p>
+    <h2>O que ela já usa (e paga)</h2>
+    <ul class="plain">
+      <li>Você usa algum app/caderno/planilha pra isso? Qual?</li>
+      <li>O que você <b>mais gosta</b> nele? E o que te <b>irrita</b>?</li>
+      <li>Quanto você paga por mês hoje em ferramentas do seu trabalho?</li>
+      <li>Se pudesse ter uma varinha mágica e resolver <b>uma</b> coisa da sua rotina, qual seria?</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="knum">04 · Agora sim: mostrar os mockups</p>
+    <h2>Reação às telas</h2>
+    <p>Só aqui você abre os protótipos. Mostre <b>nesta ordem</b> e, em cada tela, antes de explicar, pergunte: <i>“o que você acha que dá pra fazer aqui?”</i></p>
+    <ol class="steps">
+      <li><b>Agenda</b> (mobile) → o dia da Marina</li>
+      <li><b>Novo agendamento</b> → o caminho rápido</li>
+      <li><b>Criar Evento + Orçamento</b> → o diferencial (mostre o fluxo todo + o que a cliente recebe)</li>
+      <li><b>Financeiro</b> → o raio-x do negócio</li>
+    </ol>
+    <p>Para cada tela, capture a reação espontânea:</p>
+    <ul class="plain">
+      <li>“Isso aqui te ajudaria? Como? Em quê?”</li>
+      <li>“Tem algo confuso ou faltando?”</li>
+      <li>“O que você trocaria?”</li>
+    </ul>
+    <div class="gold"><b>Fique atento à linguagem corporal.</b> Olhos brilhando e “meu Deus, isso é pra mim” valem mais que qualquer nota. Um “ah, legal” morno é um alerta.</div>
+  </section>
+
+  <section>
+    <p class="knum">05 · Sondar o diferencial &amp; o preço</p>
+    <h2>Evento, orçamento e disposição a pagar</h2>
+    <h3>O diferencial</h3>
+    <div class="q">Esse jeito de juntar prova + dia + orçamento + sinal num “evento” — bate com como você trabalha?</div>
+    <div class="q">O orçamento enviável, com o botão de pagar sinal — isso mudaria algo pra você?</div>
+    <h3>Preço (deixe ela dar o número primeiro)</h3>
+    <div class="q">Se isso resolvesse tudo que a gente conversou, quanto você acharia justo pagar por mês?</div>
+    <div class="q">O que <b>precisaria</b> ter pra você assinar sem pensar duas vezes?</div>
+  </section>
+
+  <section>
+    <p class="knum">06 · Fechamento</p>
+    <h2>Compromisso, não elogio</h2>
+    <p>Elogio é grátis; compromisso é validação de verdade. Termine assim:</p>
+    <ul class="plain">
+      <li>De 0 a 10, quanto isso resolveria a sua vida? <b>Por quê esse número e não menos?</b></li>
+      <li>Você indicaria pra uma amiga da área? Pra quem, agora, na sua cabeça?</li>
+      <li><b>Quando a gente lançar, você topa testar e me dar feedback?</b> (pegue o compromisso — são suas primeiras beta-testers)</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="knum">07 · Ficha de captura</p>
+    <h2>Uma por profissional</h2>
+    <p class="sub">Preencha logo após cada conversa, enquanto está fresco. Copie este bloco para cada entrevistada.</p>
+    <div class="capture">
+      <div class="line"><span>Nome / nicho</span><span></span></div>
+      <div class="line"><span>Tempo de profissão · atend/semana</span><span></span></div>
+      <div class="line"><span>Ferramenta atual · quanto paga</span><span></span></div>
+      <div class="line"><span>Top 3 dores</span><span></span></div>
+      <div class="line"><span>Como faz orçamento de noiva hoje</span><span></span></div>
+      <div class="line"><span>Reação: Agenda / Evento / Financeiro</span><span></span></div>
+      <div class="line"><span>Quanto pagaria (R$/mês)</span><span></span></div>
+      <div class="line"><span>Topa ser beta? (sim/não)</span><span></span></div>
+      <div class="line"><span>Frase marcante (literal)</span><span></span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="knum">08 · Como ler o resultado</p>
+    <h2>Sinais de validação vs. alerta</h2>
+    <div class="signals">
+      <div class="sig g"><h4>🟢 Validou (siga em frente)</h4><ul>
+        <li>Dor de organização/financeiro forte e espontânea</li>
+        <li>Faz orçamento de noiva “no braço” e sofre com isso</li>
+        <li>Olhos brilham no fluxo de Evento/Orçamento</li>
+        <li>Dá um número de preço sem hesitar</li>
+        <li>Topa ser beta na hora</li>
+      </ul></div>
+      <div class="sig r"><h4>🔴 Alerta (repense)</h4><ul>
+        <li>“Já resolvo isso bem hoje”, sem dor real</li>
+        <li>Não vê sentido no modelo de Evento</li>
+        <li>Reações mornas (“ah, legal”) nas telas</li>
+        <li>Foge da pergunta de preço ou diz “só se for grátis”</li>
+        <li>Não indica pra ninguém concreto</li>
+      </ul></div>
+    </div>
+    <p style="margin-top:14px"><b>Meta mínima pra seguir confiante:</b> pelo menos <b>4 de cada ~6</b> confirmando a dor central (organização + evento/orçamento) e topando testar. Se a maioria for morna, a gente conversa e ajusta o rumo — melhor descobrir agora que depois de meses de código.</p>
+  </section>
+
+  <p class="foot">Kit de validação · Glowe (codinome) · use, adapte e me traga as fichas preenchidas — a gente consolida os aprendizados no PRD.</p>
+
+</div>
+</body>
+</html>
