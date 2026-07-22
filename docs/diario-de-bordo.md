@@ -11,6 +11,8 @@ Registro do processo de construção do projeto, para aprendizado e portfólio.
 - Troquei a branch master por main(padrão atual);
 - fiz o primeiro commit e criei o README do projeto;
 - Publiquei o repositório no github;
+- montei o kanban no GitHub Projects com o backlog inicial e fechei a sprint 0
+- decidi usar Django na arquitetura pra construir o backend.
 
 **O que aprendi**
  git config --global user.name e git config --global user.email -> para verificar se já havia conexão com alguma conta.
@@ -29,10 +31,11 @@ Decifrando cada parte:
  Aprendi o modelo das 3 áreas (working → staging → commit) e o ciclo add → commit → push;
 
 **Dificuldades / como resolvi**
-Hoje foi tranquilo, ainda não esbarrei em nenhuma dificuldade.
+Quando fui dar o comando 'gh issue close' esqueci de referenciar a issue que eu estava querendo fechar, então corrigi o comando que estava errado e deu certo. :D
 
 **Decisões**
 Decidi por stack web-first com backend em python; Kanban no github projects;
 
 **Próximos passos**
-Montar o kanban e decidir o framework (Django x FastAPI).
+- Configurar o ambiente Python (venv)
+- criar o projeto Django
