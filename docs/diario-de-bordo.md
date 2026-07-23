@@ -39,3 +39,28 @@ Decidi por stack web-first com backend em python; Kanban no github projects;
 **Próximos passos**
 - Configurar o ambiente Python (venv)
 - criar o projeto Django
+
+---
+
+## [22/07/2026] — Sprint 1: Backend (setup do Django)
+
+**O que fiz hoje**
+- configurei o ambiente virtual (venv)
+- instalei Django 6.0.7
+
+**O que aprendi**
+- python3 --version -> confere a versão python
+- python3 -m venv venv -> Cria a pasta venv/
+- source venv/bin/activate -> Ativa o ambiente virtual
+- "pip" é o instalador de bibliotecas do Python.
+- "pip freeze > requirements.txt" anota as bibliotecas instaladas num arquivo. Por quê? Assim qualquer pessoa (ou eu mesmo em outro PC) recria o ambiente idêntico com um comando.
+
+**Dificuldades / como resolvi**
+
+
+**Decisões**
+
+
+**Próximos passos**
+- Modelar o banco de dados do MVP.
+- Criar versões web das telas.
