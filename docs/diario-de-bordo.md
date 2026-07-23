@@ -64,3 +64,34 @@ Decidi por stack web-first com backend em python; Kanban no github projects;
 **Próximos passos**
 - Modelar o banco de dados do MVP.
 - Criar versões web das telas.
+
+---
+
+## [23/07/2026] — Sprint 1: continuação: Modelando banco de dados MVP
+
+**O que fiz hoje**
+- Criei app 'core'
+- criei o model Cliente
+- Registrei o cliente no admin
+- Criei um superusuário e cadastrei minha primeira cliente pelo painel admin.
+
+**O que aprendi**
+- Na pasta backend dei o comando 'python manage.py startapp core para criar o app, depois registrei ele em 'backend/config/settings.py' em INSTALLED_APPS adicionando 'core'
+- Método dunder '__init__'
+- Aprendi a regra do blank/null. Quando é texto, por convenção utilizo somente o blank(string vazia) e não vai o (null) para evitar conflito no banco, tendo 2 jeitos para estar vazio.
+- 'python manage.py makemigrations' para criar as migrations
+- Aprendi que o django gera um back-office completo de graça
+- O __str__ é o que faz aparecer o nome na listagem, se não apareceria algo como 'Cliente object (1)'
+
+**Dificuldades / como resolvi**
+- O makemigrations retornou "no changes detected". Descobri que não havia salvo o model no models.py, por isso não aparecia nada. Foi só eu dar um (ctrl + S) para salvar e executar o comando novamente e deu tudo certo. Com isso aprendi a fazer 3 tipos de validação: Se o app existe, se o app está configurado em INSTALLED_APPS e se o arquivo foi salvo.
+- Também descobri que na configuração de apps se utiliza ',' no final, assim quando eu for configurar um novo app não corro o risco de esquecer e quebrar a linha. 
+- Na hora de preencher a data de nascimento tentei preencher com o padrão "DD/MM/AAAA" e deu erro, a formatação que usa é
+'AAAA-MM-DD'.
+
+
+**Decisões**
+
+
+**Próximos passos**
+- Criar versões web das telas.
