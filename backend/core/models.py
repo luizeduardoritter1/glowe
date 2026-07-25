@@ -40,4 +40,24 @@ class ItemCatalogo(models.Model):
     def __str__(self):
         return self.nome
 
-    
+class Agendamento(models.Model):
+    class StatusAgendamento(models.TextChoices):
+        AGENDADO = 'AGENDADO', 'Agendado'
+        CONCLUIDO = 'CONCLUIDO', 'Concluido'
+        CANCELADO = 'CANCELADO', 'Cancelado'
+
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    data_hora = models.DateTimeField()
+    status = models.CharField(
+        max_length=20,
+        choices=StatusAgendamento.choices,
+        default=StatusAgendamento.AGENDADO
+    )
+    observacoes = models.TextField(blank=True)
+    criado_em = models.DateTimeField()
+
+    class Meta:
+        ordering = ['data_hora']
+
+    def __str__(self):
+        return f"{self.cliente.nome} - {self.data_hora.strftime('%d/%m/%Y %H:%M')} - {self.status}"
