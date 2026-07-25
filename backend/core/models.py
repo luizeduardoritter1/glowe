@@ -62,3 +62,10 @@ class Agendamento(models.Model):
 
     def __str__(self):
         return f"{self.cliente.nome} - {self.data_hora.strftime('%d/%m/%Y %H:%M')} - {self.status}"
+
+    @property
+    def valor_total(self):
+        valor_total = 0
+        for item in self.itens.all():
+            valor_total += item.preco
+        return valor_total
