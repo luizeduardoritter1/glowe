@@ -54,7 +54,7 @@ class Agendamento(models.Model):
         default=StatusAgendamento.AGENDADO
     )
     observacoes = models.TextField(blank=True)
-    criado_em = models.DateTimeField()
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['data_hora']
