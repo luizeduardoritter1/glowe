@@ -47,6 +47,7 @@ class Agendamento(models.Model):
         CANCELADO = 'CANCELADO', 'Cancelado'
 
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    itens = models.ManyToManyField(ItemCatalogo, blank=True)
     data_hora = models.DateTimeField()
     status = models.CharField(
         max_length=20,
