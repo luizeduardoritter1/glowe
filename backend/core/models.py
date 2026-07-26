@@ -47,6 +47,12 @@ class Agendamento(models.Model):
         CANCELADO = 'CANCELADO', 'Cancelado'
 
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    evento = models.ForeignKey(
+        'Evento',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     itens = models.ManyToManyField(ItemCatalogo, blank=True)
     data_hora = models.DateTimeField()
     status = models.CharField(
@@ -69,3 +75,31 @@ class Agendamento(models.Model):
         for item in self.itens.all():
             valor_total += item.preco
         return valor_total
+
+class Evento(models.Model):
+    class TipoEvento(models.TextChoices):
+        CASAMENTO = 'CASAMENTO', 'Casamento'
+        ANIVERSARIO = 'ANIVERSARIO', 'Aniversário'
+        FORMATURA = 'FORMATURA', 'Formatura'
+        ENSAIO = 'ENSAIO', 'Ensaio'
+        OUTROS = 'OUTROS', 'Outros'
+
+    nome = models.CharField(max_length=100)
+    tipo = models.CharField(
+        max_length=20,
+        choices=TipoEvento.choices,
+        default=TipoEvento.OUTROS
+    )
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    data_evento = models.DateField()
+    local = models.CharField(max_length=200, blank=True)
+    valor_sinal = models.DecimalField(max_digits=8, decimal_places=2)
+    observacoes = models.TextField(blank=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['data_evento']
+
+    def __str__(self):
+        return f"{self.nome} - {self.data_evento.strftime('%d/%m/%Y')} - {self.cliente.nome}"
+    
