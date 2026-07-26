@@ -93,7 +93,7 @@ class Evento(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     data_evento = models.DateField()
     local = models.CharField(max_length=200, blank=True)
-    valor_sinal = models.DecimalField(max_digits=8, decimal_places=2)
+    valor_sinal = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     observacoes = models.TextField(blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
