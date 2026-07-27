@@ -232,3 +232,47 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 
 **Próximos passos**
 - Criar versões web das telas.
+
+---
+
+## [26/07/2026] — Sprint 1: Modelagem do MVP concluída
+
+**O que fiz hoje**
+- Criei o model `ItemCatalogo` (unifiquei serviço e adicional num só cadastro, diferenciados por um campo `tipo`).
+- Criei o model `Agendamento` (o "átomo" da agenda), ligado ao Cliente.
+- Liguei o Agendamento aos itens (ex: maquiagem + penteado no mesmo atendimento).
+- Criei o `valor_total`, que soma o preço dos itens automaticamente.
+- Deixei o painel admin mais profissional (colunas, filtro e busca) para o Cliente e o Agendamento.
+- Criei o model `Evento` (o "contêiner") e liguei o Agendamento a ele de forma opcional.
+- Com isso **fechei a modelagem do MVP**: 4 models (Cliente, ItemCatalogo, Agendamento, Evento) com os 3 tipos de relacionamento.
+- Testei tudo pelo painel admin e commitei/pushei cada etapa.
+
+**O que aprendi**
+- `DecimalField` para dinheiro (nunca usar `FloatField` pra valor — dá erro de arredondamento). Usa `max_digits` e `decimal_places`.
+- `TextChoices`: campo com opções fixas, que vira menu suspenso no admin (`choices=X.choices, default=X.OPCAO`).
+- `BooleanField` (verdadeiro/falso) com `default`, e `PositiveIntegerField` (inteiro positivo).
+- Estrutura de "caixa dentro de caixa": o `TextChoices` fica aninhado DENTRO do model, e os campos ficam no model — a indentação define o que está dentro de quê.
+- `ForeignKey` = relacionamento um-para-muitos (1 cliente → vários agendamentos). A chave fica no lado "muitos".
+- `on_delete`: o que fazer com os "filhos" se o "pai" for apagado — `CASCADE` (apaga junto), `PROTECT` (impede), `SET_NULL` (desvincula).
+- `ManyToManyField` = muitos-para-muitos (1 agendamento → vários itens, 1 item → vários agendamentos). O Django cria uma "tabela do meio" escondida. Não tem `on_delete`.
+- `@property` = método que age como atributo (calcula na hora, não guarda). Não gera migração, porque é lógica Python, não é campo.
+- Django shell (`python manage.py shell`) pra testar código; `Model.objects.first()` pega um registro. Se eu mudar o código, preciso reiniciar o shell.
+- `ForeignKey` opcional: `null=True, blank=True` + `on_delete=SET_NULL` — é a implementação do modelo híbrido (o agendamento pode ter evento ou não).
+- String reference (`'Evento'` entre aspas) pra referenciar um model definido mais abaixo no arquivo.
+- Customização do admin: `list_display` (colunas), `list_filter` (filtro lateral), `search_fields` (busca — só campos de texto; o `cliente__nome` com `__` atravessa o relacionamento).
+- Git: `git add .` pega da pasta atual pra baixo (melhor rodar na raiz); commit/push funcionam de qualquer pasta. "Changes to be committed" = está na staging, ainda não foi commitado.
+
+**Dificuldades / como resolvi**
+- No `ItemCatalogo` esqueci de envolver os campos num `class ItemCatalogo(models.Model)` — tinha colocado tudo dentro do `TextChoices` por engano. Resolvi entendendo a lógica de "caixa dentro de caixa" (indentação).
+- Coloquei `choices`/`default` no campo `nome` sem querer — tirei, porque `nome` é texto livre.
+- Esqueci o `auto_now_add=True` no `criado_em` do Agendamento — corrigi (gerou uma migração de "alter").
+- Tentei escrever o método `valor_total` dentro do shell — aprendi que o código vai no `models.py` (arquivo); o shell serve só pra TESTAR.
+- Bug silencioso: escrevi `List_display` com L maiúsculo no admin. O Django não deu erro, só ignorou e não mostrou as colunas. Aprendi que quando algo "não funciona mas não dá erro", devo desconfiar de maiúsculas/digitação.
+- Achei que tinha commitado o admin, mas só tinha dado `git add` (estava "staged"). Reforcei o ciclo add → commit → push.
+
+**Decisões**
+- Modelo híbrido implementado de verdade: o Agendamento tem um `evento` opcional com `on_delete=SET_NULL` (se o evento for apagado, o agendamento continua e só perde o vínculo).
+- Catálogo unificado: serviço e adicional são o mesmo model, diferenciados pelo campo `tipo` e pelo `ocupa_agenda`.
+
+**Próximos passos**
+- Sair do admin e fazer o sistema aparecer numa página web de verdade (primeira view + template).
