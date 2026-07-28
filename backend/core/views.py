@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Cliente
 
 def lista_clientes(request):
-    return HttpResponse("Olá, Em breve, a lista de clientes aqui!!!")
+    clientes = Cliente.objects.all()
+    return render(request, 'core/lista_clientes.html', {'clientes': clientes})
