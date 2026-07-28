@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="utf-8">
-    <title>Clientes — Glowe</title>
-</head>
-<body>
-    <h1>Clientes</h1>
+{% extends 'core/base.html' %}
+
+{% block titulo %}Clientes — Glowe{% endblock %}
+
+{% block conteudo %}
+    <h2>Clientes</h2>
     <ul>
         {% for cliente in clientes %}
-            <li>{{ cliente.nome }} — {{ cliente.telefone }} - {{cliente.email}}</li>
+            <li>{{ cliente.nome }} — {{ cliente.telefone }} — {{ cliente.email }}</li>
         {% empty %}
             <li>Nenhum cliente cadastrado ainda.</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
