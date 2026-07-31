@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}Agendamentos — Glowe{% endblock %}
+
+{% block conteudo %}
+    <h2>Agendamentos</h2>
+    <ul>
+        {% for agendamento in agendamentos %}   
+            <li>{{ agendamento.cliente.nome }} — {{ agendamento.valor_total }} — {{ agendamento.data_hora|date:"d/m/Y H:i" }}</li>
+        {% empty %}
+            <li>Nenhum agendamento cadastrado ainda.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
