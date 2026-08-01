@@ -62,7 +62,11 @@ class Agendamento(models.Model):
 
     # ForeignKey = relação "um-para-muitos": 1 cliente tem vários agendamentos.
     # on_delete=CASCADE → se apagar o cliente, apaga os agendamentos dele junto.
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.CASCADE,
+        related_name='agendamentos'
+        )
 
     # Vínculo OPCIONAL com um evento (o "contêiner"). É a implementação do modelo híbrido.
     evento = models.ForeignKey(
