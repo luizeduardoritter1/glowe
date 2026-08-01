@@ -14,7 +14,18 @@ def novo_cliente(request):
             return redirect('lista_clientes')
     else:
         form = ClienteForm()
-    return render(request, 'core/form_cliente.html', {'form': form})
+    return render(request, 'core/form_cliente.html', {'form': form, 'titulo': 'Novo Cliente'})
+
+def editar_cliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('detalhe_cliente', id=cliente.id)
+    else:
+        form = ClienteForm(instance=cliente)
+    return render(request, 'core/form_cliente.html', {'form': form, 'titulo': 'Editar Cliente'})
 
 # View da LISTA de clientes  →  responde ao endereço /clientes/
 def lista_clientes(request):

@@ -300,6 +300,7 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 - Tag `{% url 'nome_da_rota' %}` pra criar links pelo **nome** da rota, em vez de "chumbar" o endereço — se a URL mudar, os links se atualizam sozinhos.
 - No template dá pra atravessar relacionamento (`{{ agendamento.cliente.nome }}`) e usar a `@property` (`{{ agendamento.valor_total }}`).
 - aprendi a relação reversa: do cliente consigo acessar os agendamentos dele. Usei related_name='agendamentos' pra deixar o acesso legível (cliente.agendamentos), e no template chamei sem parênteses
+- Criei o primeiro formulário (ClienteForm com ModelForm). Aprendi o padrão da view: se POST valida e salva, se GET mostra o form vazio. E o {% csrf_token %} que protege o envio. Meu site agora escreve no banco.
 
 **Dificuldades / como resolvi**
 - No template de agendamentos, nomeei o block como `content` em vez de `conteudo` (o nome que está no `base.html`). O Django **ignorou silenciosamente** e o conteúdo não apareceu (só o cabeçalho). Aprendi que o nome do block no filho tem que ser **idêntico** ao do pai — é da mesma família do bug do `List_display`: falha silenciosa, sem erro. Já aprendi a desconfiar de nome/digitação quando algo "some" sem dar erro.

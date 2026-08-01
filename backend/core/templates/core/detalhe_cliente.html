@@ -16,4 +16,5 @@
             <li>Este cliente ainda não tem agendamentos.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'editar_cliente' cliente.id %}">✏️ Editar</a>
 {% endblock %}
