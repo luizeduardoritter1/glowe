@@ -276,3 +276,36 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 
 **Próximos passos**
 - Sair do admin e fazer o sistema aparecer numa página web de verdade (primeira view + template).
+
+---
+
+## [27/07/2026] — Sprint 1: Primeiras páginas web (views, templates e URLs)
+
+**O que fiz hoje**
+- Criei minha primeira view (retornando um texto simples com `HttpResponse`) e configurei as rotas: `core/urls.py` + `include('core.urls')` no `config/urls.py`.
+- Evoluí a view pra buscar os clientes do banco e mostrar num template HTML (`render` + context).
+- Criei o `base.html` e fiz as páginas herdarem dele (herança de templates).
+- Criei a página de listagem de agendamentos.
+- Adicionei um menu de navegação no `base.html` pra pular entre Clientes e Agendamentos.
+
+**O que aprendi**
+- O fluxo MVT do Django: **URL → View → Template → Navegador**.
+- View = função Python que recebe o `request` e devolve uma resposta. `HttpResponse` devolve texto; `render` devolve um template.
+- Rotas: `path('rota/', view, name='...')`. Cada app tem seu `urls.py`, e a central (`config/urls.py`) usa `include` pra puxar as rotas do app.
+- `render(request, 'core/template.html', context)` — o context é um dicionário que leva os dados do Python pro template.
+- Linguagem de template: `{{ variavel }}` **mostra** um valor; `{% for %}`/`{% if %}` **fazem** lógica; `{% empty %}` trata a lista vazia; todo `for`/`if` precisa ser fechado (`{% endfor %}`).
+- Templates ficam em `app/templates/app/` (o "sobrenome" com o nome do app evita conflito entre apps).
+- Herança de templates: o `base.html` tem os `{% block %}` (buracos); as páginas usam `{% extends %}` e preenchem só os blocks. É o DRY — layout escrito uma vez, usado em todas as páginas.
+- Filtro de template com `|` (ex: `{{ agendamento.data_hora|date:"d/m/Y H:i" }}` formata a data).
+- Tag `{% url 'nome_da_rota' %}` pra criar links pelo **nome** da rota, em vez de "chumbar" o endereço — se a URL mudar, os links se atualizam sozinhos.
+- No template dá pra atravessar relacionamento (`{{ agendamento.cliente.nome }}`) e usar a `@property` (`{{ agendamento.valor_total }}`).
+
+**Dificuldades / como resolvi**
+- No template de agendamentos, nomeei o block como `content` em vez de `conteudo` (o nome que está no `base.html`). O Django **ignorou silenciosamente** e o conteúdo não apareceu (só o cabeçalho). Aprendi que o nome do block no filho tem que ser **idêntico** ao do pai — é da mesma família do bug do `List_display`: falha silenciosa, sem erro. Já aprendi a desconfiar de nome/digitação quando algo "some" sem dar erro.
+
+**Decisões**
+- Usei `{% url %}` com os `name` das rotas em vez de endereços chumbados, pra facilitar a manutenção.
+
+**Próximos passos**
+- Criar a página de detalhe do cliente (URL dinâmica com parâmetro `<int:id>` + `get_object_or_404`).
+- Depois, mostrar na página do cliente os agendamentos dele (voltar pela relação).
