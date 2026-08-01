@@ -9,6 +9,7 @@ urlpatterns = [
     # Endereço /clientes/  →  chama a view lista_clientes
     # O name='lista_clientes' é o "apelido" da rota, usado no template com {% url 'lista_clientes' %}
     path('clientes/', views.lista_clientes, name='lista_clientes'),
+    path('clientes/novo/', views.novo_cliente, name='novo_cliente'),
 
     # Endereço /clientes/<numero>/  →  chama a view detalhe_cliente
     # <int:id> captura um número da URL e entrega pra view no parâmetro 'id'.

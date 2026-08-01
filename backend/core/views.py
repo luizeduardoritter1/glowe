@@ -2,9 +2,19 @@
 # Cada view recebe um pedido (request) do navegador, busca os dados que precisa
 # e devolve uma página pronta.
 
-from django.shortcuts import render, get_object_or_404  # atalhos úteis do Django
-from .models import Cliente, Agendamento                # os models (tabelas) que vamos usar aqui
+from django.shortcuts import render, get_object_or_404, redirect  # atalhos úteis do Django
+from .models import Cliente, Agendamento               # os models (tabelas) que vamos usar aqui
+from .forms import ClienteForm      # os formulários que vamos usar aqui
 
+def novo_cliente(request):
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_clientes')
+    else:
+        form = ClienteForm()
+    return render(request, 'core/form_cliente.html', {'form': form})
 
 # View da LISTA de clientes  →  responde ao endereço /clientes/
 def lista_clientes(request):

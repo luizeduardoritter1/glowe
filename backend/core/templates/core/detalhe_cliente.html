@@ -7,6 +7,7 @@
     <p><strong>Nome:</strong> {{ cliente.nome }}</p>
     <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
     <p><strong>Email:</strong> {{ cliente.email }}</p>
+    <p><strong>Observações:</strong> {{ cliente.observacoes }}</p>
     <h3>Agendamentos deste cliente</h3>
     <ul>
         {% for agendamento in cliente.agendamentos.all %}
