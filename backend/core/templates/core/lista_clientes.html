@@ -6,7 +6,7 @@
     <h2>Clientes</h2>
     <ul>
         {% for cliente in clientes %}
-            <li>{{ cliente.nome }} — {{ cliente.telefone }} — {{ cliente.email }}</li>
+            <li><a href="{% url 'detalhe_cliente' cliente.id %}">{{ cliente.nome }}</a></li>
         {% empty %}
             <li>Nenhum cliente cadastrado ainda.</li>
         {% endfor %}
