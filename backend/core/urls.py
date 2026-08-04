@@ -11,6 +11,7 @@ urlpatterns = [
     path('clientes/', views.lista_clientes, name='lista_clientes'),
     path('clientes/novo/', views.novo_cliente, name='novo_cliente'),
     path('clientes/<int:id>/editar/', views.editar_cliente, name='editar_cliente'),
+    path('clientes/<int:id>/excluir/', views.excluir_cliente, name='excluir_cliente'),
 
     # Endereço /clientes/<numero>/  →  chama a view detalhe_cliente
     # <int:id> captura um número da URL e entrega pra view no parâmetro 'id'.

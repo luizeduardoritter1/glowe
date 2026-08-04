@@ -27,6 +27,13 @@ def editar_cliente(request, id):
         form = ClienteForm(instance=cliente)
     return render(request, 'core/form_cliente.html', {'form': form, 'titulo': 'Editar Cliente'})
 
+def excluir_cliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    if request.method == 'POST':
+        cliente.delete()
+        return redirect('lista_clientes')
+    return render(request, 'core/confirmar_exclusao.html', {'cliente': cliente})
+
 # View da LISTA de clientes  →  responde ao endereço /clientes/
 def lista_clientes(request):
     clientes = Cliente.objects.all()   # busca TODOS os clientes no banco (retorna uma lista)
