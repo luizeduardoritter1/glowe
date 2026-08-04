@@ -311,3 +311,38 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 **Próximos passos**
 - Criar a página de detalhe do cliente (URL dinâmica com parâmetro `<int:id>` + `get_object_or_404`).
 - Depois, mostrar na página do cliente os agendamentos dele (voltar pela relação).
+
+---
+
+## [03/08/2026] — Sprint 2: CRUD completo do Cliente (páginas dinâmicas e formulários)
+
+**O que fiz hoje**
+- Criei a página de **detalhe do cliente** (URL dinâmica com `<int:id>`) e transformei o nome na lista em link pra ela.
+- Mostrei os **agendamentos do cliente** na página de detalhe, usando a **relação reversa** (`related_name='agendamentos'`).
+- Adicionei **comentários explicativos** no código (`models.py`, `views.py`, `urls.py`) pra estudar.
+- Criei o **formulário de cadastrar cliente** pelo site (`ClienteForm` com `ModelForm`).
+- Adicionei **editar cliente** (Update) reaproveitando o mesmo formulário.
+- Adicionei **excluir cliente** (Delete) com página de confirmação.
+- Com isso, **completei o CRUD do Cliente** todo pelo site (Create, Read, Update, Delete).
+
+**O que aprendi**
+- **URL dinâmica**: `<int:id>` captura um número da URL e passa pra view; `get_object_or_404` busca um objeto pelo id (ou mostra "404 não encontrado" em vez de quebrar).
+- **Relação reversa**: com `related_name='agendamentos'` eu acesso `cliente.agendamentos` (no template, sem parênteses). É o caminho inverso da ForeignKey.
+- **Comentários**: ótimo pra aprender, mas em código profissional a gente comenta menos — o *porquê*, não o *o quê* (código bom é autoexplicativo).
+- **ModelForm**: um formulário que o Django gera a partir do model. O padrão da view é: se `POST` → valida (`is_valid`) e salva (`form.save()`) → `redirect`; se `GET` → mostra o form vazio.
+- **`{% csrf_token %}`**: selo de segurança obrigatório em formulários `POST` (protege contra ataque CSRF). Sem ele, dá erro 403.
+- **Editar** = mesmo form com `instance=objeto` (no GET vem preenchido, no POST atualiza). Reaproveitei um template só (`form_cliente.html`) mudando o título pelo context.
+- **Excluir** = ação destrutiva vai por **POST**, nunca por link/GET (segurança: robôs seguem links e poderiam apagar dados). Uso página de confirmação; `objeto.delete()` apaga do banco.
+- `redirect` pode levar argumentos (ex: `redirect('detalhe_cliente', id=cliente.id)`).
+- O `CASCADE` na prática: apagar um cliente apaga os agendamentos dele junto.
+- Reforcei o padrão: a maioria dos meus erros é **nome que não bate** (template, block, rota, import) — e ler a mensagem de erro entrega a solução.
+
+**Dificuldades / como resolvi**
+- `ImportError: cannot import name 'AgendamentoForm'` — importei no `views.py` um formulário que ainda não existia no `forms.py`, e isso quebrou o app inteiro. Aprendi a ler esse erro ("não achei o nome X no arquivo Y") e a só importar o que existe/uso.
+- `TemplateDoesNotExist` e `NoReverseMatch` — de novo nome que não batia: a view pedia `detalhe_clientes.html` mas o arquivo era `detalhe_cliente.html`; e a rota estava com `name='detalhe_clientes'` enquanto o template pedia `detalhe_cliente`. Corrigi alinhando tudo no singular.
+
+**Decisões**
+- Um único template de formulário (`form_cliente.html`) serve pra **criar e editar**, diferenciado só pelo título passado no context.
+
+**Próximos passos**
+- Fazer o CRUD do **Agendamento** (o coração do produto), que traz campos de relacionamento (escolher cliente e itens) e um campo de data/hora.
