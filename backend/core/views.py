@@ -65,3 +65,25 @@ def novo_agendamento(request):
     else:
         form = AgendamentoForm()
     return render(request, 'core/form_agendamento.html', {'form': form, 'titulo': 'Novo Agendamento'})
+
+def editar_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id=id)
+    if request.method == 'POST':
+        form = AgendamentoForm(request.POST, instance=agendamento)
+        if form.is_valid():
+            form.save()
+            return redirect('detalhe_agendamento', id=agendamento.id)
+    else:
+        form = AgendamentoForm(instance=agendamento)
+    return render(request, 'core/form_agendamento.html', {'form': form, 'titulo': 'Editar Agendamento'})
+
+def excluir_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id=id)
+    if request.method == 'POST':
+        agendamento.delete()
+        return redirect('lista_agendamentos')
+    return render(request, 'core/confirmar_exclusao_agendamento.html', {'agendamento': agendamento})
+
+def detalhe_agendamento(request, id):
+    agendamento = get_object_or_404(Agendamento, id=id)
+    return render(request, 'core/detalhe_agendamento.html', {'agendamento': agendamento})

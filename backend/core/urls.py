@@ -21,4 +21,7 @@ urlpatterns = [
     # Endereço /agendamentos/  →  chama a view lista_agendamentos
     path('agendamentos/', views.lista_agendamentos, name='lista_agendamentos'),
     path('agendamentos/novo/', views.novo_agendamento, name='novo_agendamento'),
+    path('agendamentos/<int:id>/editar/', views.editar_agendamento, name='editar_agendamento'),
+    path('agendamentos/<int:id>/excluir/', views.excluir_agendamento, name='excluir_agendamento'),
+    path('agendamentos/<int:id>/', views.detalhe_agendamento, name='detalhe_agendamento'),
 ]

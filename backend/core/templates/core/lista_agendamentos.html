@@ -6,7 +6,7 @@
     <h2>Agendamentos</h2>
     <ul>
         {% for agendamento in agendamentos %}   
-            <li>{{ agendamento.cliente.nome }} — {{ agendamento.valor_total }} — {{ agendamento.data_hora|date:"d/m/Y H:i" }}</li>
+            <li><a href="{% url 'detalhe_agendamento' agendamento.id %}">{{ agendamento.cliente.nome }} — {{ agendamento.data_hora|date:"d/m/Y H:i" }} — R$ {{ agendamento.valor_total }}</a></li>
         {% empty %}
             <li>Nenhum agendamento cadastrado ainda.</li>
         {% endfor %}

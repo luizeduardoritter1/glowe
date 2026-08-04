@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Agendamento — Glowe{% endblock %}
+{% block conteudo %}
+    <h2>Detalhes do Agendamento</h2>
+    <p><strong>Cliente:</strong> {{ agendamento.cliente.nome }}</p>
+    <p><strong>Data:</strong> {{ agendamento.data_hora|date:"d/m/Y H:i" }}</p>
+    <p><strong>Status:</strong> {{ agendamento.status }}</p>
+    <p><strong>Valor total:</strong> R$ {{ agendamento.valor_total }}</p>
+
+    <h3>Itens</h3>
+    <ul>
+        {% for item in agendamento.itens.all %}
+            <li>{{ item.nome }} — R$ {{ item.preco }}</li>
+        {% empty %}
+            <li>Nenhum item neste agendamento.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'editar_agendamento' agendamento.id %}">✏️ Editar</a>
+    <a href="{% url 'excluir_agendamento' agendamento.id %}">🗑️ Excluir</a>
+{% endblock %}
