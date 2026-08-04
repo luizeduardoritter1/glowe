@@ -19,5 +19,6 @@ urlpatterns = [
     path('clientes/<int:id>/', views.detalhe_cliente, name='detalhe_cliente'),
 
     # Endereço /agendamentos/  →  chama a view lista_agendamentos
-    path('agendamentos/', views.lista_agendamentos, name='lista_agendamentos')
+    path('agendamentos/', views.lista_agendamentos, name='lista_agendamentos'),
+    path('agendamentos/novo/', views.novo_agendamento, name='novo_agendamento'),
 ]

@@ -4,7 +4,7 @@
 
 from django.shortcuts import render, get_object_or_404, redirect  # atalhos úteis do Django
 from .models import Cliente, Agendamento               # os models (tabelas) que vamos usar aqui
-from .forms import ClienteForm      # os formulários que vamos usar aqui
+from .forms import ClienteForm, AgendamentoForm      # os formulários que vamos usar aqui
 
 def novo_cliente(request):
     if request.method == 'POST':
@@ -55,3 +55,13 @@ def detalhe_cliente(request, id):
 def lista_agendamentos(request):
     agendamentos = Agendamento.objects.all()   # busca todos os agendamentos
     return render(request, 'core/lista_agendamentos.html', {'agendamentos': agendamentos})
+
+def novo_agendamento(request):
+    if request.method == 'POST':
+        form = AgendamentoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_agendamentos')
+    else:
+        form = AgendamentoForm()
+    return render(request, 'core/form_agendamento.html', {'form': form, 'titulo': 'Novo Agendamento'})
