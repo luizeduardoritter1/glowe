@@ -16,8 +16,8 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import Cliente, Agendamento, ItemCatalogo
-from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm
+from .models import Cliente, Agendamento, ItemCatalogo, Evento
+from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -132,3 +132,41 @@ class ItemCatalogoDeleteView(DeleteView):
     context_object_name = 'item'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('lista_catalogo')
+
+
+# ═══════════════ EVENTO ═══════════════
+
+class EventoListView(ListView):
+    model = Evento
+    template_name = 'core/lista_eventos.html'
+    context_object_name = 'eventos'
+
+
+class EventoDetailView(DetailView):
+    model = Evento
+    template_name = 'core/detalhe_evento.html'
+    context_object_name = 'evento'
+    pk_url_kwarg = 'id'
+
+
+class EventoCreateView(CreateView):
+    model = Evento
+    form_class = EventoForm
+    template_name = 'core/form.html'
+    extra_context = {'titulo': 'Novo Evento'}
+
+
+class EventoUpdateView(UpdateView):
+    model = Evento
+    form_class = EventoForm
+    template_name = 'core/form.html'
+    pk_url_kwarg = 'id'
+    extra_context = {'titulo': 'Editar Evento'}
+
+
+class EventoDeleteView(DeleteView):
+    model = Evento
+    template_name = 'core/confirmar_exclusao.html'
+    context_object_name = 'evento'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('lista_eventos')

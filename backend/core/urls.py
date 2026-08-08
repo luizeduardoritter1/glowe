@@ -26,4 +26,11 @@ urlpatterns = [
     path('catalogo/<int:id>/editar/', views.ItemCatalogoUpdateView.as_view(), name='editar_item'),
     path('catalogo/<int:id>/excluir/', views.ItemCatalogoDeleteView.as_view(), name='excluir_item'),
     path('catalogo/<int:id>/', views.ItemCatalogoDetailView.as_view(), name='detalhe_item'),
+
+    # ---- Eventos ----
+    path('eventos/', views.EventoListView.as_view(), name='lista_eventos'),
+    path('eventos/novo/', views.EventoCreateView.as_view(), name='novo_evento'),
+    path('eventos/<int:id>/editar/', views.EventoUpdateView.as_view(), name='editar_evento'),
+    path('eventos/<int:id>/excluir/', views.EventoDeleteView.as_view(), name='excluir_evento'),
+    path('eventos/<int:id>/', views.EventoDetailView.as_view(), name='detalhe_evento'),
 ]

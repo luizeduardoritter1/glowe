@@ -81,7 +81,8 @@ class Agendamento(models.Model):
         'Evento',                    # 'Evento' entre aspas porque essa classe é definida mais abaixo no arquivo
         on_delete=models.SET_NULL,   # se apagar o evento, o agendamento CONTINUA e só perde o vínculo
         null=True,
-        blank=True                   # null + blank = campo opcional
+        blank=True,                  # null + blank = campo opcional
+        related_name='agendamentos'  # acesso reverso: evento.agendamentos
     )
 
     # ManyToMany = relação "muitos-para-muitos": 1 agendamento tem vários itens,
@@ -145,3 +146,6 @@ class Evento(models.Model):
 
     def __str__(self):
         return f"{self.nome} - {self.data_evento.strftime('%d/%m/%Y')} - {self.cliente.nome}"
+
+    def get_absolute_url(self):
+        return reverse('detalhe_evento', kwargs={'id': self.id})
