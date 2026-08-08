@@ -24,4 +24,11 @@ urlpatterns = [
     path('agendamentos/<int:id>/editar/', views.editar_agendamento, name='editar_agendamento'),
     path('agendamentos/<int:id>/excluir/', views.excluir_agendamento, name='excluir_agendamento'),
     path('agendamentos/<int:id>/', views.detalhe_agendamento, name='detalhe_agendamento'),
+
+    # Catálogo (itens: serviços e adicionais)
+    path('catalogo/', views.lista_catalogo, name='lista_catalogo'),
+    path('catalogo/novo/', views.novo_item, name='novo_item'),
+    path('catalogo/<int:id>/editar/', views.editar_item, name='editar_item'),
+    path('catalogo/<int:id>/excluir/', views.excluir_item, name='excluir_item'),
+    path('catalogo/<int:id>/', views.detalhe_item, name='detalhe_item'),
 ]

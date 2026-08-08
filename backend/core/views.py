@@ -3,8 +3,8 @@
 # e devolve uma página pronta.
 
 from django.shortcuts import render, get_object_or_404, redirect  # atalhos úteis do Django
-from .models import Cliente, Agendamento               # os models (tabelas) que vamos usar aqui
-from .forms import ClienteForm, AgendamentoForm      # os formulários que vamos usar aqui
+from .models import Cliente, Agendamento, ItemCatalogo               # os models (tabelas) que vamos usar aqui
+from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm      # os formulários que vamos usar aqui
 
 def novo_cliente(request):
     if request.method == 'POST':
@@ -87,3 +87,42 @@ def excluir_agendamento(request, id):
 def detalhe_agendamento(request, id):
     agendamento = get_object_or_404(Agendamento, id=id)
     return render(request, 'core/detalhe_agendamento.html', {'agendamento': agendamento})
+
+
+# ═══════════════ CATÁLOGO (ItemCatalogo) ═══════════════
+
+def lista_catalogo(request):
+    itens = ItemCatalogo.objects.all()
+    return render(request, 'core/lista_catalogo.html', {'itens': itens})
+
+def detalhe_item(request, id):
+    item = get_object_or_404(ItemCatalogo, id=id)
+    return render(request, 'core/detalhe_item.html', {'item': item})
+
+def novo_item(request):
+    if request.method == 'POST':
+        form = ItemCatalogoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_catalogo')
+    else:
+        form = ItemCatalogoForm()
+    return render(request, 'core/form_item.html', {'form': form, 'titulo': 'Novo Item'})
+
+def editar_item(request, id):
+    item = get_object_or_404(ItemCatalogo, id=id)
+    if request.method == 'POST':
+        form = ItemCatalogoForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('detalhe_item', id=item.id)
+    else:
+        form = ItemCatalogoForm(instance=item)
+    return render(request, 'core/form_item.html', {'form': form, 'titulo': 'Editar Item'})
+
+def excluir_item(request, id):
+    item = get_object_or_404(ItemCatalogo, id=id)
+    if request.method == 'POST':
+        item.delete()
+        return redirect('lista_catalogo')
+    return render(request, 'core/confirmar_exclusao_item.html', {'item': item})

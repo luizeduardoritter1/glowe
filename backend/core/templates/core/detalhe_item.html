@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}{{ item.nome }} — Glowe{% endblock %}
+
+{% block conteudo %}
+    <h2>{{ item.nome }}</h2>
+    <p><strong>Tipo:</strong> {{ item.get_tipo_display }}</p>
+    <p><strong>Preço:</strong> R$ {{ item.preco }}</p>
+    <p><strong>Custo:</strong> {% if item.custo %}R$ {{ item.custo }}{% else %}—{% endif %}</p>
+    <p><strong>Duração:</strong> {% if item.duracao_min %}{{ item.duracao_min }} min{% else %}—{% endif %}</p>
+    <p><strong>Ocupa agenda:</strong> {{ item.ocupa_agenda|yesno:"Sim,Não" }}</p>
+
+    <a href="{% url 'editar_item' item.id %}">✏️ Editar</a>
+    <a href="{% url 'excluir_item' item.id %}">🗑️ Excluir</a>
+{% endblock %}

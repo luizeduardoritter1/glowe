@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}Excluir — Glowe{% endblock %}
+
+{% block conteudo %}
+    <h2>Excluir item</h2>
+    <p>Tem certeza que deseja excluir <strong>{{ item.nome }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+        <a href="{% url 'detalhe_item' item.id %}">Cancelar</a>
+    </form>
+{% endblock %}
