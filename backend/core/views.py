@@ -1,128 +1,134 @@
-# views.py — as "funções de resposta".
-# Cada view recebe um pedido (request) do navegador, busca os dados que precisa
-# e devolve uma página pronta.
+# views.py — Views Baseadas em Classe (Class-Based Views / CBV).
+#
+# As "generic views" do Django já trazem o CRUD pronto:
+#   ListView   → lista        DetailView → detalhe
+#   CreateView → criar         UpdateView → editar        DeleteView → excluir
+# A gente só CONFIGURA (qual model, qual template, etc.) — o Django cuida do resto
+# (buscar do banco, validar o form, salvar, redirecionar). Muito menos código repetido.
+#
+# Convenções usadas aqui:
+# - template_name → reaproveita os templates que já existiam.
+# - context_object_name → o nome da variável no template (ex: 'cliente', 'clientes').
+# - pk_url_kwarg = 'id' → nossas rotas usam <int:id> (o padrão do Django seria <int:pk>).
+# - Create/Update redirecionam para o get_absolute_url() do model (definido em models.py).
+# - extra_context → passa o 'titulo' para o template de formulário.
 
-from django.shortcuts import render, get_object_or_404, redirect  # atalhos úteis do Django
-from .models import Cliente, Agendamento, ItemCatalogo               # os models (tabelas) que vamos usar aqui
-from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm      # os formulários que vamos usar aqui
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-def novo_cliente(request):
-    if request.method == 'POST':
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_clientes')
-    else:
-        form = ClienteForm()
-    return render(request, 'core/form_cliente.html', {'form': form, 'titulo': 'Novo Cliente'})
-
-def editar_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
-    if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            form.save()
-            return redirect('detalhe_cliente', id=cliente.id)
-    else:
-        form = ClienteForm(instance=cliente)
-    return render(request, 'core/form_cliente.html', {'form': form, 'titulo': 'Editar Cliente'})
-
-def excluir_cliente(request, id):
-    cliente = get_object_or_404(Cliente, id=id)
-    if request.method == 'POST':
-        cliente.delete()
-        return redirect('lista_clientes')
-    return render(request, 'core/confirmar_exclusao.html', {'cliente': cliente})
-
-# View da LISTA de clientes  →  responde ao endereço /clientes/
-def lista_clientes(request):
-    clientes = Cliente.objects.all()   # busca TODOS os clientes no banco (retorna uma lista)
-    # render() = pega o template + injeta os dados + devolve a página pronta.
-    # O dicionário {'clientes': clientes} é o "context": leva os dados pro HTML.
-    return render(request, 'core/lista_clientes.html', {'clientes': clientes})
+from .models import Cliente, Agendamento, ItemCatalogo
+from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm
 
 
-# View de DETALHE de um cliente  →  responde a /clientes/<id>/
-# Repara no parâmetro 'id': ele chega da URL (o <int:id> lá no urls.py).
-def detalhe_cliente(request, id):
-    # get_object_or_404 busca UM cliente pelo id.
-    # Se esse id não existir, mostra a página "404 - não encontrado" em vez de quebrar o site.
-    cliente = get_object_or_404(Cliente, id=id)
-    return render(request, 'core/detalhe_cliente.html', {'cliente': cliente})
+# ═══════════════ CLIENTE ═══════════════
+
+class ClienteListView(ListView):
+    model = Cliente
+    template_name = 'core/lista_clientes.html'
+    context_object_name = 'clientes'
 
 
-# View da LISTA de agendamentos  →  responde a /agendamentos/
-def lista_agendamentos(request):
-    agendamentos = Agendamento.objects.all()   # busca todos os agendamentos
-    return render(request, 'core/lista_agendamentos.html', {'agendamentos': agendamentos})
+class ClienteDetailView(DetailView):
+    model = Cliente
+    template_name = 'core/detalhe_cliente.html'
+    context_object_name = 'cliente'
+    pk_url_kwarg = 'id'
 
-def novo_agendamento(request):
-    if request.method == 'POST':
-        form = AgendamentoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_agendamentos')
-    else:
-        form = AgendamentoForm()
-    return render(request, 'core/form_agendamento.html', {'form': form, 'titulo': 'Novo Agendamento'})
 
-def editar_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id=id)
-    if request.method == 'POST':
-        form = AgendamentoForm(request.POST, instance=agendamento)
-        if form.is_valid():
-            form.save()
-            return redirect('detalhe_agendamento', id=agendamento.id)
-    else:
-        form = AgendamentoForm(instance=agendamento)
-    return render(request, 'core/form_agendamento.html', {'form': form, 'titulo': 'Editar Agendamento'})
+class ClienteCreateView(CreateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = 'core/form_cliente.html'
+    extra_context = {'titulo': 'Novo Cliente'}
 
-def excluir_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id=id)
-    if request.method == 'POST':
-        agendamento.delete()
-        return redirect('lista_agendamentos')
-    return render(request, 'core/confirmar_exclusao_agendamento.html', {'agendamento': agendamento})
 
-def detalhe_agendamento(request, id):
-    agendamento = get_object_or_404(Agendamento, id=id)
-    return render(request, 'core/detalhe_agendamento.html', {'agendamento': agendamento})
+class ClienteUpdateView(UpdateView):
+    model = Cliente
+    form_class = ClienteForm
+    template_name = 'core/form_cliente.html'
+    pk_url_kwarg = 'id'
+    extra_context = {'titulo': 'Editar Cliente'}
+
+
+class ClienteDeleteView(DeleteView):
+    model = Cliente
+    template_name = 'core/confirmar_exclusao.html'
+    context_object_name = 'cliente'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('lista_clientes')
+
+
+# ═══════════════ AGENDAMENTO ═══════════════
+
+class AgendamentoListView(ListView):
+    model = Agendamento
+    template_name = 'core/lista_agendamentos.html'
+    context_object_name = 'agendamentos'
+
+
+class AgendamentoDetailView(DetailView):
+    model = Agendamento
+    template_name = 'core/detalhe_agendamento.html'
+    context_object_name = 'agendamento'
+    pk_url_kwarg = 'id'
+
+
+class AgendamentoCreateView(CreateView):
+    model = Agendamento
+    form_class = AgendamentoForm
+    template_name = 'core/form_agendamento.html'
+    extra_context = {'titulo': 'Novo Agendamento'}
+
+
+class AgendamentoUpdateView(UpdateView):
+    model = Agendamento
+    form_class = AgendamentoForm
+    template_name = 'core/form_agendamento.html'
+    pk_url_kwarg = 'id'
+    extra_context = {'titulo': 'Editar Agendamento'}
+
+
+class AgendamentoDeleteView(DeleteView):
+    model = Agendamento
+    template_name = 'core/confirmar_exclusao_agendamento.html'
+    context_object_name = 'agendamento'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('lista_agendamentos')
 
 
 # ═══════════════ CATÁLOGO (ItemCatalogo) ═══════════════
 
-def lista_catalogo(request):
-    itens = ItemCatalogo.objects.all()
-    return render(request, 'core/lista_catalogo.html', {'itens': itens})
+class ItemCatalogoListView(ListView):
+    model = ItemCatalogo
+    template_name = 'core/lista_catalogo.html'
+    context_object_name = 'itens'
 
-def detalhe_item(request, id):
-    item = get_object_or_404(ItemCatalogo, id=id)
-    return render(request, 'core/detalhe_item.html', {'item': item})
 
-def novo_item(request):
-    if request.method == 'POST':
-        form = ItemCatalogoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_catalogo')
-    else:
-        form = ItemCatalogoForm()
-    return render(request, 'core/form_item.html', {'form': form, 'titulo': 'Novo Item'})
+class ItemCatalogoDetailView(DetailView):
+    model = ItemCatalogo
+    template_name = 'core/detalhe_item.html'
+    context_object_name = 'item'
+    pk_url_kwarg = 'id'
 
-def editar_item(request, id):
-    item = get_object_or_404(ItemCatalogo, id=id)
-    if request.method == 'POST':
-        form = ItemCatalogoForm(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-            return redirect('detalhe_item', id=item.id)
-    else:
-        form = ItemCatalogoForm(instance=item)
-    return render(request, 'core/form_item.html', {'form': form, 'titulo': 'Editar Item'})
 
-def excluir_item(request, id):
-    item = get_object_or_404(ItemCatalogo, id=id)
-    if request.method == 'POST':
-        item.delete()
-        return redirect('lista_catalogo')
-    return render(request, 'core/confirmar_exclusao_item.html', {'item': item})
+class ItemCatalogoCreateView(CreateView):
+    model = ItemCatalogo
+    form_class = ItemCatalogoForm
+    template_name = 'core/form_item.html'
+    extra_context = {'titulo': 'Novo Item'}
+
+
+class ItemCatalogoUpdateView(UpdateView):
+    model = ItemCatalogo
+    form_class = ItemCatalogoForm
+    template_name = 'core/form_item.html'
+    pk_url_kwarg = 'id'
+    extra_context = {'titulo': 'Editar Item'}
+
+
+class ItemCatalogoDeleteView(DeleteView):
+    model = ItemCatalogo
+    template_name = 'core/confirmar_exclusao_item.html'
+    context_object_name = 'item'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('lista_catalogo')

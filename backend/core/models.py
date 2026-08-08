@@ -3,6 +3,7 @@
 # O Django lê este arquivo e cria/atualiza o banco através das migrações.
 
 from django.db import models
+from django.urls import reverse
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -21,6 +22,10 @@ class Cliente(models.Model):
     # __str__ define como o objeto "se apresenta" (no admin, no shell, nas listas).
     def __str__(self):
         return self.nome      # mostra o nome, em vez de "Cliente object (1)"
+
+    def get_absolute_url(self):
+        # Para onde as CBVs (Create/Update) redirecionam após salvar.
+        return reverse('detalhe_cliente', kwargs={'id': self.id})
 
 
 # ═══════════════ ITEM DE CATÁLOGO ═══════════════
@@ -50,6 +55,9 @@ class ItemCatalogo(models.Model):
 
     def __str__(self):
         return self.nome
+
+    def get_absolute_url(self):
+        return reverse('detalhe_item', kwargs={'id': self.id})
 
 
 # ═══════════════ AGENDAMENTO ═══════════════
@@ -104,6 +112,9 @@ class Agendamento(models.Model):
         for item in self.itens.all():   # percorre cada item ligado a este agendamento
             valor_total += item.preco   # acumula o preço no total
         return valor_total
+
+    def get_absolute_url(self):
+        return reverse('detalhe_agendamento', kwargs={'id': self.id})
 
 
 # ═══════════════ EVENTO ═══════════════
