@@ -38,14 +38,14 @@ class ClienteDetailView(DetailView):
 class ClienteCreateView(CreateView):
     model = Cliente
     form_class = ClienteForm
-    template_name = 'core/form_cliente.html'
+    template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Cliente'}
 
 
 class ClienteUpdateView(UpdateView):
     model = Cliente
     form_class = ClienteForm
-    template_name = 'core/form_cliente.html'
+    template_name = 'core/form.html'
     pk_url_kwarg = 'id'
     extra_context = {'titulo': 'Editar Cliente'}
 
@@ -76,21 +76,21 @@ class AgendamentoDetailView(DetailView):
 class AgendamentoCreateView(CreateView):
     model = Agendamento
     form_class = AgendamentoForm
-    template_name = 'core/form_agendamento.html'
+    template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Agendamento'}
 
 
 class AgendamentoUpdateView(UpdateView):
     model = Agendamento
     form_class = AgendamentoForm
-    template_name = 'core/form_agendamento.html'
+    template_name = 'core/form.html'
     pk_url_kwarg = 'id'
     extra_context = {'titulo': 'Editar Agendamento'}
 
 
 class AgendamentoDeleteView(DeleteView):
     model = Agendamento
-    template_name = 'core/confirmar_exclusao_agendamento.html'
+    template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'agendamento'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('lista_agendamentos')
@@ -114,21 +114,21 @@ class ItemCatalogoDetailView(DetailView):
 class ItemCatalogoCreateView(CreateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
-    template_name = 'core/form_item.html'
+    template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Item'}
 
 
 class ItemCatalogoUpdateView(UpdateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
-    template_name = 'core/form_item.html'
+    template_name = 'core/form.html'
     pk_url_kwarg = 'id'
     extra_context = {'titulo': 'Editar Item'}
 
 
 class ItemCatalogoDeleteView(DeleteView):
     model = ItemCatalogo
-    template_name = 'core/confirmar_exclusao_item.html'
+    template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'item'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('lista_catalogo')
