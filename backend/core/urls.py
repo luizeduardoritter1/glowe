@@ -3,9 +3,16 @@
 # Os NOMES (name=) foram mantidos, então os {% url %} dos templates continuam iguais.
 
 from django.urls import path
+from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
+    # ---- Autenticação / home ----
+    path('', RedirectView.as_view(pattern_name='lista_agendamentos'), name='home'),
+    path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
     # ---- Clientes ----
     path('clientes/', views.ClienteListView.as_view(), name='lista_clientes'),
     path('clientes/novo/', views.ClienteCreateView.as_view(), name='novo_cliente'),

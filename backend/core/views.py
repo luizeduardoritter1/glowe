@@ -15,6 +15,7 @@
 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Cliente, Agendamento, ItemCatalogo, Evento
 from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm
@@ -22,27 +23,27 @@ from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm
 
 # ═══════════════ CLIENTE ═══════════════
 
-class ClienteListView(ListView):
+class ClienteListView(LoginRequiredMixin, ListView):
     model = Cliente
     template_name = 'core/lista_clientes.html'
     context_object_name = 'clientes'
 
 
-class ClienteDetailView(DetailView):
+class ClienteDetailView(LoginRequiredMixin, DetailView):
     model = Cliente
     template_name = 'core/detalhe_cliente.html'
     context_object_name = 'cliente'
     pk_url_kwarg = 'id'
 
 
-class ClienteCreateView(CreateView):
+class ClienteCreateView(LoginRequiredMixin, CreateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Cliente'}
 
 
-class ClienteUpdateView(UpdateView):
+class ClienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'core/form.html'
@@ -50,7 +51,7 @@ class ClienteUpdateView(UpdateView):
     extra_context = {'titulo': 'Editar Cliente'}
 
 
-class ClienteDeleteView(DeleteView):
+class ClienteDeleteView(LoginRequiredMixin, DeleteView):
     model = Cliente
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'cliente'
@@ -60,27 +61,27 @@ class ClienteDeleteView(DeleteView):
 
 # ═══════════════ AGENDAMENTO ═══════════════
 
-class AgendamentoListView(ListView):
+class AgendamentoListView(LoginRequiredMixin, ListView):
     model = Agendamento
     template_name = 'core/lista_agendamentos.html'
     context_object_name = 'agendamentos'
 
 
-class AgendamentoDetailView(DetailView):
+class AgendamentoDetailView(LoginRequiredMixin, DetailView):
     model = Agendamento
     template_name = 'core/detalhe_agendamento.html'
     context_object_name = 'agendamento'
     pk_url_kwarg = 'id'
 
 
-class AgendamentoCreateView(CreateView):
+class AgendamentoCreateView(LoginRequiredMixin, CreateView):
     model = Agendamento
     form_class = AgendamentoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Agendamento'}
 
 
-class AgendamentoUpdateView(UpdateView):
+class AgendamentoUpdateView(LoginRequiredMixin, UpdateView):
     model = Agendamento
     form_class = AgendamentoForm
     template_name = 'core/form.html'
@@ -88,7 +89,7 @@ class AgendamentoUpdateView(UpdateView):
     extra_context = {'titulo': 'Editar Agendamento'}
 
 
-class AgendamentoDeleteView(DeleteView):
+class AgendamentoDeleteView(LoginRequiredMixin, DeleteView):
     model = Agendamento
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'agendamento'
@@ -98,27 +99,27 @@ class AgendamentoDeleteView(DeleteView):
 
 # ═══════════════ CATÁLOGO (ItemCatalogo) ═══════════════
 
-class ItemCatalogoListView(ListView):
+class ItemCatalogoListView(LoginRequiredMixin, ListView):
     model = ItemCatalogo
     template_name = 'core/lista_catalogo.html'
     context_object_name = 'itens'
 
 
-class ItemCatalogoDetailView(DetailView):
+class ItemCatalogoDetailView(LoginRequiredMixin, DetailView):
     model = ItemCatalogo
     template_name = 'core/detalhe_item.html'
     context_object_name = 'item'
     pk_url_kwarg = 'id'
 
 
-class ItemCatalogoCreateView(CreateView):
+class ItemCatalogoCreateView(LoginRequiredMixin, CreateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Item'}
 
 
-class ItemCatalogoUpdateView(UpdateView):
+class ItemCatalogoUpdateView(LoginRequiredMixin, UpdateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
     template_name = 'core/form.html'
@@ -126,7 +127,7 @@ class ItemCatalogoUpdateView(UpdateView):
     extra_context = {'titulo': 'Editar Item'}
 
 
-class ItemCatalogoDeleteView(DeleteView):
+class ItemCatalogoDeleteView(LoginRequiredMixin, DeleteView):
     model = ItemCatalogo
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'item'
@@ -136,27 +137,27 @@ class ItemCatalogoDeleteView(DeleteView):
 
 # ═══════════════ EVENTO ═══════════════
 
-class EventoListView(ListView):
+class EventoListView(LoginRequiredMixin, ListView):
     model = Evento
     template_name = 'core/lista_eventos.html'
     context_object_name = 'eventos'
 
 
-class EventoDetailView(DetailView):
+class EventoDetailView(LoginRequiredMixin, DetailView):
     model = Evento
     template_name = 'core/detalhe_evento.html'
     context_object_name = 'evento'
     pk_url_kwarg = 'id'
 
 
-class EventoCreateView(CreateView):
+class EventoCreateView(LoginRequiredMixin, CreateView):
     model = Evento
     form_class = EventoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Evento'}
 
 
-class EventoUpdateView(UpdateView):
+class EventoUpdateView(LoginRequiredMixin, UpdateView):
     model = Evento
     form_class = EventoForm
     template_name = 'core/form.html'
@@ -164,7 +165,7 @@ class EventoUpdateView(UpdateView):
     extra_context = {'titulo': 'Editar Evento'}
 
 
-class EventoDeleteView(DeleteView):
+class EventoDeleteView(LoginRequiredMixin, DeleteView):
     model = Evento
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'evento'
