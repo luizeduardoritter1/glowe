@@ -3,16 +3,31 @@
 {% block titulo %}Eventos — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>Eventos</h2>
-    <ul>
-        {% for evento in eventos %}
-            <li>
-                <a href="{% url 'detalhe_evento' evento.id %}">{{ evento.nome }}</a>
-                — {{ evento.get_tipo_display }} — {{ evento.data_evento|date:"d/m/Y" }} — {{ evento.cliente.nome }}
-            </li>
-        {% empty %}
-            <li>Nenhum evento cadastrado ainda.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'novo_evento' %}">+ Novo evento</a>
+    <div class="phead">
+        <div>
+            <h2>Eventos</h2>
+            <p class="sub">Trabalhos grandes (casamentos, 15 anos...)</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta" href="{% url 'novo_evento' %}">+ Novo evento</a>
+        </div>
+    </div>
+
+    <table class="tbl">
+        <thead>
+            <tr><th>Evento</th><th>Tipo</th><th>Data</th><th>Cliente</th></tr>
+        </thead>
+        <tbody>
+            {% for evento in eventos %}
+            <tr>
+                <td><a href="{% url 'detalhe_evento' evento.id %}">{{ evento.nome }}</a></td>
+                <td><span class="chip">{{ evento.get_tipo_display }}</span></td>
+                <td>{{ evento.data_evento|date:"d/m/Y" }}</td>
+                <td>{{ evento.cliente.nome }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Nenhum evento cadastrado ainda.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -3,16 +3,32 @@
 {% block titulo %}Catálogo — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>Catálogo</h2>
-    <ul>
-        {% for item in itens %}
-            <li>
-                <a href="{% url 'detalhe_item' item.id %}">{{ item.nome }}</a>
-                — {{ item.get_tipo_display }} — R$ {{ item.preco }}
-            </li>
-        {% empty %}
-            <li>Nenhum item cadastrado ainda.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'novo_item' %}">+ Novo item</a>
+    <div class="phead">
+        <div>
+            <h2>Catálogo</h2>
+            <p class="sub">Serviços e adicionais</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta" href="{% url 'novo_item' %}">+ Novo item</a>
+        </div>
+    </div>
+
+    <table class="tbl">
+        <thead>
+            <tr><th>Item</th><th>Tipo</th><th>Duração</th><th class="ta-r">Preço</th><th class="ta-r">Custo</th></tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td><a href="{% url 'detalhe_item' item.id %}">{{ item.nome }}</a></td>
+                <td><span class="chip">{{ item.get_tipo_display }}</span></td>
+                <td>{% if item.duracao_min %}{{ item.duracao_min }} min{% else %}—{% endif %}</td>
+                <td class="ta-r">R$ {{ item.preco }}</td>
+                <td class="ta-r">{% if item.custo %}R$ {{ item.custo }}{% else %}—{% endif %}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">Nenhum item cadastrado ainda.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

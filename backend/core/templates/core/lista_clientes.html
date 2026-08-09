@@ -3,13 +3,31 @@
 {% block titulo %}Clientes — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>Clientes</h2>
-    <ul>
-        {% for cliente in clientes %}
-            <li><a href="{% url 'detalhe_cliente' cliente.id %}">{{ cliente.nome }}</a></li>
-        {% empty %}
-            <li>Nenhum cliente cadastrado ainda.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'novo_cliente' %}">+ Novo cliente</a>
+    <div class="phead">
+        <div>
+            <h2>Clientes</h2>
+            <p class="sub">{{ clientes|length }} cliente{{ clientes|length|pluralize }}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta" href="{% url 'novo_cliente' %}">+ Novo cliente</a>
+        </div>
+    </div>
+
+    <table class="tbl">
+        <thead>
+            <tr><th>Nome</th><th>Telefone</th><th>Aniversário</th><th class="ta-r">Atendimentos</th></tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td><span class="av sm">{{ cliente.nome|first }}</span><a href="{% url 'detalhe_cliente' cliente.id %}">{{ cliente.nome }}</a></td>
+                <td>{{ cliente.telefone }}</td>
+                <td>{{ cliente.data_nascimento|date:"d/m/Y"|default:"—" }}</td>
+                <td class="ta-r">{{ cliente.agendamentos.count }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Nenhum cliente cadastrado ainda.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

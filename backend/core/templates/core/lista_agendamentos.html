@@ -1,15 +1,33 @@
 {% extends 'core/base.html' %}
 
-{% block titulo %}Agendamentos — Glowe{% endblock %}
+{% block titulo %}Agenda — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>Agendamentos</h2>
-    <ul>
-        {% for agendamento in agendamentos %}   
-            <li><a href="{% url 'detalhe_agendamento' agendamento.id %}">{{ agendamento.cliente.nome }} — {{ agendamento.data_hora|date:"d/m/Y H:i" }} — R$ {{ agendamento.valor_total }}</a></li>
-        {% empty %}
-            <li>Nenhum agendamento cadastrado ainda.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'novo_agendamento' %}">+ Novo agendamento</a>
+    <div class="phead">
+        <div>
+            <h2>Agenda</h2>
+            <p class="sub">{{ agendamentos|length }} agendamento{{ agendamentos|length|pluralize }}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta" href="{% url 'novo_agendamento' %}">+ Novo agendamento</a>
+        </div>
+    </div>
+
+    <table class="tbl">
+        <thead>
+            <tr><th>Cliente</th><th>Data e hora</th><th>Status</th><th class="ta-r">Valor</th></tr>
+        </thead>
+        <tbody>
+            {% for agendamento in agendamentos %}
+            <tr>
+                <td><a href="{% url 'detalhe_agendamento' agendamento.id %}">{{ agendamento.cliente.nome }}</a></td>
+                <td>{{ agendamento.data_hora|date:"d/m/Y H:i" }}</td>
+                <td><span class="chip">{{ agendamento.get_status_display }}</span></td>
+                <td class="ta-r">R$ {{ agendamento.valor_total }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Nenhum agendamento cadastrado ainda.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
