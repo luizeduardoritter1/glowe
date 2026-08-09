@@ -1,21 +1,38 @@
 {% extends 'core/base.html' %}
+
 {% block titulo %}Agendamento — Glowe{% endblock %}
+
 {% block conteudo %}
-    <h2>Detalhes do Agendamento</h2>
-    <p><strong>Cliente:</strong> {{ agendamento.cliente.nome }}</p>
-    <p><strong>Data:</strong> {{ agendamento.data_hora|date:"d/m/Y H:i" }}</p>
-    <p><strong>Status:</strong> {{ agendamento.status }}</p>
-    <p><strong>Valor total:</strong> R$ {{ agendamento.valor_total }}</p>
+    <div class="phead">
+        <div>
+            <p class="sub">Agendamento</p>
+            <h2>{{ agendamento.cliente.nome }}</h2>
+            <p class="sub">{{ agendamento.data_hora|date:"d/m/Y H:i" }} · {{ agendamento.get_status_display }}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta ghost" href="{% url 'editar_agendamento' agendamento.id %}">✏️ Editar</a>
+            <a class="cta ghost" href="{% url 'excluir_agendamento' agendamento.id %}">🗑️ Excluir</a>
+        </div>
+    </div>
 
-    <h3>Itens</h3>
-    <ul>
-        {% for item in agendamento.itens.all %}
-            <li>{{ item.nome }} — R$ {{ item.preco }}</li>
-        {% empty %}
-            <li>Nenhum item neste agendamento.</li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'editar_agendamento' agendamento.id %}">✏️ Editar</a>
-    <a href="{% url 'excluir_agendamento' agendamento.id %}">🗑️ Excluir</a>
+    <div class="cols">
+        <div class="panel">
+            <h3>Itens</h3>
+            <table class="tbl mini">
+                {% for item in agendamento.itens.all %}
+                <tr><td>{{ item.nome }}</td><td class="ta-r">R$ {{ item.preco }}</td></tr>
+                {% empty %}
+                <tr><td>Nenhum item neste agendamento.</td></tr>
+                {% endfor %}
+            </table>
+            <div class="tot"><span>Total</span><b>R$ {{ agendamento.valor_total }}</b></div>
+        </div>
+        <div class="panel">
+            <h3>Detalhes</h3>
+            <p><strong>Cliente:</strong> {{ agendamento.cliente.nome }}</p>
+            <p><strong>Evento:</strong> {% if agendamento.evento %}<a href="{% url 'detalhe_evento' agendamento.evento.id %}">{{ agendamento.evento.nome }}</a>{% else %}—{% endif %}</p>
+            <p><strong>Status:</strong> {{ agendamento.get_status_display }}</p>
+            <p><strong>Observações:</strong> {{ agendamento.observacoes|default:"—" }}</p>
+        </div>
+    </div>
 {% endblock %}

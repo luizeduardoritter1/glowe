@@ -3,23 +3,39 @@
 {% block titulo %}{{ evento.nome }} — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>{{ evento.nome }}</h2>
-    <p><strong>Tipo:</strong> {{ evento.get_tipo_display }}</p>
-    <p><strong>Cliente:</strong> {{ evento.cliente.nome }}</p>
-    <p><strong>Data:</strong> {{ evento.data_evento|date:"d/m/Y" }}</p>
-    <p><strong>Local:</strong> {{ evento.local|default:"—" }}</p>
-    <p><strong>Sinal:</strong> {% if evento.valor_sinal %}R$ {{ evento.valor_sinal }}{% else %}—{% endif %}</p>
-    <p><strong>Observações:</strong> {{ evento.observacoes|default:"—" }}</p>
+    <div class="phead">
+        <div>
+            <p class="sub">◆ Evento</p>
+            <h2>{{ evento.nome }}</h2>
+            <p class="sub">{{ evento.get_tipo_display }} · {{ evento.data_evento|date:"d/m/Y" }}{% if evento.local %} · {{ evento.local }}{% endif %}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta ghost" href="{% url 'editar_evento' evento.id %}">✏️ Editar</a>
+            <a class="cta ghost" href="{% url 'excluir_evento' evento.id %}">🗑️ Excluir</a>
+        </div>
+    </div>
 
-    <h3>Agendamentos deste evento</h3>
-    <ul>
-        {% for agendamento in evento.agendamentos.all %}
-            <li>{{ agendamento.data_hora|date:"d/m/Y H:i" }} — {{ agendamento.status }} — R$ {{ agendamento.valor_total }}</li>
-        {% empty %}
-            <li>Nenhum agendamento vinculado a este evento.</li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'editar_evento' evento.id %}">✏️ Editar</a>
-    <a href="{% url 'excluir_evento' evento.id %}">🗑️ Excluir</a>
+    <div class="cols">
+        <div class="panel">
+            <h3>Agendamentos vinculados</h3>
+            {% for a in evento.agendamentos.all %}
+            <div class="ev-row">
+                <span class="ev-dot">◆</span>
+                <div class="grow">
+                    <b><a href="{% url 'detalhe_agendamento' a.id %}">{{ a.cliente.nome }}</a></b>
+                    <small>{{ a.data_hora|date:"d/m/Y H:i" }} · {{ a.get_status_display }}</small>
+                </div>
+                <span>R$ {{ a.valor_total }}</span>
+            </div>
+            {% empty %}
+            <p>Nenhum agendamento vinculado ainda.</p>
+            {% endfor %}
+        </div>
+        <div class="panel">
+            <h3>Financeiro do evento</h3>
+            <p><strong>Cliente:</strong> {{ evento.cliente.nome }}</p>
+            <div class="money"><span>Sinal (reserva)</span><b class="in">{% if evento.valor_sinal %}R$ {{ evento.valor_sinal }}{% else %}—{% endif %}</b></div>
+            <p style="margin-top:12px"><strong>Observações:</strong> {{ evento.observacoes|default:"—" }}</p>
+        </div>
+    </div>
 {% endblock %}

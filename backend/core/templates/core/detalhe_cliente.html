@@ -1,21 +1,42 @@
 {% extends 'core/base.html' %}
 
-{% block titulo %}Detalhes do Cliente — Glowe{% endblock %}
+{% block titulo %}{{ cliente.nome }} — Glowe{% endblock %}
 
 {% block conteudo %}
-    <h2>Detalhes do Cliente</h2>
-    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
-    <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
-    <p><strong>Email:</strong> {{ cliente.email }}</p>
-    <p><strong>Observações:</strong> {{ cliente.observacoes }}</p>
-    <h3>Agendamentos deste cliente</h3>
-    <ul>
-        {% for agendamento in cliente.agendamentos.all %}
-            <li>{{ agendamento.data_hora|date:"d/m/Y H:i" }} — {{ agendamento.status }} — R$ {{ agendamento.valor_total }}</li>
-        {% empty %}
-            <li>Este cliente ainda não tem agendamentos.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'editar_cliente' cliente.id %}">✏️ Editar</a>
-    <a href="{% url 'excluir_cliente' cliente.id %}">🗑️ Excluir</a>
+    <div class="phead">
+        <div class="phead-cli">
+            <span class="av lg">{{ cliente.nome|first }}</span>
+            <div>
+                <h2>{{ cliente.nome }}</h2>
+                <p class="sub">{{ cliente.telefone }}{% if cliente.data_nascimento %} · 🎂 {{ cliente.data_nascimento|date:"d/m" }}{% endif %}</p>
+            </div>
+        </div>
+        <div class="phead-r">
+            <a class="cta ghost" href="{% url 'editar_cliente' cliente.id %}">✏️ Editar</a>
+            <a class="cta ghost" href="{% url 'excluir_cliente' cliente.id %}">🗑️ Excluir</a>
+        </div>
+    </div>
+
+    <div class="cols">
+        <div class="panel">
+            <h3>Agendamentos</h3>
+            <table class="tbl mini">
+                {% for a in cliente.agendamentos.all %}
+                <tr>
+                    <td><a href="{% url 'detalhe_agendamento' a.id %}">{{ a.data_hora|date:"d/m/Y H:i" }}</a></td>
+                    <td>{{ a.get_status_display }}</td>
+                    <td class="ta-r">R$ {{ a.valor_total }}</td>
+                </tr>
+                {% empty %}
+                <tr><td>Nenhum agendamento ainda.</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="panel">
+            <h3>Dados &amp; notas</h3>
+            <p><strong>E-mail:</strong> {{ cliente.email|default:"—" }}</p>
+            <p><strong>Nascimento:</strong> {{ cliente.data_nascimento|date:"d/m/Y"|default:"—" }}</p>
+            <p><strong>Observações:</strong> {{ cliente.observacoes|default:"—" }}</p>
+        </div>
+    </div>
 {% endblock %}
