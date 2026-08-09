@@ -1,5 +1,5 @@
 from django import forms
-from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento
+from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento, ItemOrcamento
 
 
 class ClienteForm(forms.ModelForm):
@@ -30,3 +30,9 @@ class LancamentoForm(forms.ModelForm):
     class Meta:
         model = Lancamento
         fields = ['descricao', 'tipo', 'valor', 'data']
+
+
+class ItemOrcamentoForm(forms.ModelForm):
+    class Meta:
+        model = ItemOrcamento
+        fields = ['item', 'quantidade']

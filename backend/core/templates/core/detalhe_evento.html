@@ -17,6 +17,23 @@
 
     <div class="cols">
         <div class="panel">
+            <h3>Orçamento</h3>
+            <table class="tbl mini">
+                {% for linha in evento.itens_orcamento.all %}
+                <tr>
+                    <td>{{ linha.quantidade }}× {{ linha.item.nome }}</td>
+                    <td class="ta-r">R$ {{ linha.subtotal }}</td>
+                    <td class="ta-r">
+                        <form method="post" action="{% url 'remover_item_orcamento' linha.id %}">{% csrf_token %}<button class="logout">remover</button></form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td>Nenhum item no orçamento ainda.</td></tr>
+                {% endfor %}
+            </table>
+            <div class="tot"><span>Total</span><b>R$ {{ evento.valor_total_orcamento }}</b></div>
+            <p style="margin-top:14px"><a class="cta ghost" href="{% url 'adicionar_item_orcamento' evento.id %}">+ Adicionar item</a></p>
+
             <h3>Agendamentos vinculados</h3>
             {% for a in evento.agendamentos.all %}
             <div class="ev-row">
@@ -25,17 +42,24 @@
                     <b><a href="{% url 'detalhe_agendamento' a.id %}">{{ a.cliente.nome }}</a></b>
                     <small>{{ a.data_hora|date:"d/m/Y H:i" }} · {{ a.get_status_display }}</small>
                 </div>
-                <span>R$ {{ a.valor_total }}</span>
             </div>
             {% empty %}
             <p>Nenhum agendamento vinculado ainda.</p>
             {% endfor %}
         </div>
+
         <div class="panel">
             <h3>Financeiro do evento</h3>
             <p><strong>Cliente:</strong> {{ evento.cliente.nome }}</p>
+            <div class="money"><span>Valor total</span><b>R$ {{ evento.valor_total_orcamento }}</b></div>
             <div class="money"><span>Sinal (reserva)</span><b class="in">{% if evento.valor_sinal %}R$ {{ evento.valor_sinal }}{% else %}—{% endif %}</b></div>
-            <p style="margin-top:12px"><strong>Observações:</strong> {{ evento.observacoes|default:"—" }}</p>
+            <div class="money"><span>Saldo</span><b class="pend">R$ {{ evento.saldo }}</b></div>
+
+            <h3>Orçamento enviável</h3>
+            <p class="sub">Link público pra mandar pra cliente (ela não precisa de login):</p>
+            <p><a href="{% url 'orcamento_publico' evento.token %}" target="_blank">Abrir orçamento da cliente ↗</a></p>
+
+            {% if evento.observacoes %}<p style="margin-top:14px"><strong>Observações:</strong> {{ evento.observacoes }}</p>{% endif %}
         </div>
     </div>
 {% endblock %}

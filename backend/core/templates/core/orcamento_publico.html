@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orçamento — {{ evento.nome }}</title>
+    <style>
+        :root {
+            --sf:#fff; --ink:#241b24; --ink3:#a093a0; --line:#ece2e9;
+            --rose:#bc3c6a; --rose-ink:#8e2a50; --rose-soft:#f9e6ee; --rose-2:#e86a96;
+            --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+            --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+            font-family: var(--sans); color: var(--ink); background: linear-gradient(160deg, var(--rose-soft), #f5f1f3); }
+        .card { background: var(--sf); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+            width: 420px; max-width: 100%; box-shadow: 0 24px 50px -28px rgba(60,20,45,.45); }
+        .top { background: linear-gradient(160deg, var(--rose-ink), var(--rose)); color: #fff; padding: 24px; }
+        .top .by { font-size: 12px; opacity: .9; }
+        .top h1 { margin: 10px 0 2px; font-family: var(--serif); font-size: 1.5rem; font-weight: 600; }
+        .top p { margin: 0; font-size: 12px; opacity: .85; }
+        .body { padding: 22px 24px; }
+        .item { display: flex; justify-content: space-between; font-size: 14px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+        .item span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; }
+        .tot { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; padding-top: 12px; border-top: 2px solid var(--rose-soft); }
+        .tot b { font-family: var(--serif); font-size: 1.6rem; color: var(--rose-ink); }
+        .sinal { background: var(--rose-soft); border-radius: 12px; padding: 12px 14px; margin: 16px 0; font-size: 13px; color: var(--rose-ink); }
+        .val { text-align: center; font-size: 11px; color: var(--ink3); margin-top: 14px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="top">
+            <div class="by">Para {{ evento.cliente.nome }}</div>
+            <h1>Orçamento — {{ evento.get_tipo_display }}</h1>
+            <p>{{ evento.nome }} · {{ evento.data_evento|date:"d/m/Y" }}</p>
+        </div>
+        <div class="body">
+            {% for linha in evento.itens_orcamento.all %}
+            <div class="item"><span>{{ linha.quantidade }}× {{ linha.item.nome }}</span><span>R$ {{ linha.subtotal }}</span></div>
+            {% empty %}
+            <div class="item"><span>Orçamento em preparação.</span><span></span></div>
+            {% endfor %}
+            <div class="tot"><span>Valor total</span><b>R$ {{ evento.valor_total_orcamento }}</b></div>
+            {% if evento.valor_sinal %}
+            <div class="sinal">Para reservar sua data, um sinal de <b>R$ {{ evento.valor_sinal }}</b> · saldo de R$ {{ evento.saldo }} até o evento.</div>
+            {% endif %}
+            <p class="val">Orçamento de {{ evento.cliente.nome }} · feito com Glowe</p>
+        </div>
+    </div>
+</body>
+</html>

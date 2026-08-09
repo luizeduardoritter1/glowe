@@ -43,6 +43,11 @@ urlpatterns = [
     path('eventos/<int:id>/editar/', views.EventoUpdateView.as_view(), name='editar_evento'),
     path('eventos/<int:id>/excluir/', views.EventoDeleteView.as_view(), name='excluir_evento'),
     path('eventos/<int:id>/', views.EventoDetailView.as_view(), name='detalhe_evento'),
+    path('eventos/<int:id>/orcamento/adicionar/', views.adicionar_item_orcamento, name='adicionar_item_orcamento'),
+    path('orcamento-item/<int:id>/remover/', views.remover_item_orcamento, name='remover_item_orcamento'),
+
+    # ---- Orçamento público (SEM login) ----
+    path('orcamento/<uuid:token>/', views.orcamento_publico, name='orcamento_publico'),
 
     # ---- Financeiro ----
     path('financeiro/', views.financeiro, name='financeiro'),

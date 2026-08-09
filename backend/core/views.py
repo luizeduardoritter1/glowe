@@ -17,12 +17,12 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from datetime import date, timedelta
 from django.db.models import Sum
 
-from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento
-from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm, LancamentoForm
+from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento, ItemOrcamento
+from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm, LancamentoForm, ItemOrcamentoForm
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -245,3 +245,35 @@ class LancamentoDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/confirmar_exclusao.html'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('financeiro')
+
+
+# ═══════════════ ORÇAMENTO (itens de linha + página pública) ═══════════════
+
+@login_required
+def adicionar_item_orcamento(request, id):
+    evento = get_object_or_404(Evento, id=id)
+    if request.method == 'POST':
+        form = ItemOrcamentoForm(request.POST)
+        if form.is_valid():
+            linha = form.save(commit=False)   # não salva ainda — falta o evento
+            linha.evento = evento             # vincula ao evento da URL
+            linha.save()
+            return redirect('detalhe_evento', id=evento.id)
+    else:
+        form = ItemOrcamentoForm()
+    return render(request, 'core/form.html', {'form': form, 'titulo': 'Adicionar item ao orçamento'})
+
+
+@login_required
+def remover_item_orcamento(request, id):
+    linha = get_object_or_404(ItemOrcamento, id=id)
+    evento_id = linha.evento.id
+    if request.method == 'POST':      # remoção só via POST (segurança)
+        linha.delete()
+    return redirect('detalhe_evento', id=evento_id)
+
+
+def orcamento_publico(request, token):
+    # Página PÚBLICA (sem login) — a cliente abre pelo link com o token único.
+    evento = get_object_or_404(Evento, token=token)
+    return render(request, 'core/orcamento_publico.html', {'evento': evento})
