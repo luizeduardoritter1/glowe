@@ -4,6 +4,7 @@
 
 from django.db import models
 from django.urls import reverse
+import uuid
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -140,6 +141,7 @@ class Evento(models.Model):
     valor_sinal = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)  # sinal p/ reservar; opcional
     observacoes = models.TextField(blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)  # código único do link público do orçamento
 
     class Meta:
         ordering = ['data_evento']
@@ -149,6 +151,31 @@ class Evento(models.Model):
 
     def get_absolute_url(self):
         return reverse('detalhe_evento', kwargs={'id': self.id})
+
+    @property
+    def valor_total_orcamento(self):
+        # Soma dos subtotais de todas as linhas do orçamento.
+        return sum((linha.subtotal for linha in self.itens_orcamento.all()), 0)
+
+    @property
+    def saldo(self):
+        # Valor total do orçamento menos o sinal já pago.
+        return self.valor_total_orcamento - (self.valor_sinal or 0)
+
+
+# ═══════════════ ITEM DO ORÇAMENTO (linha) ═══════════════
+# Cada linha do orçamento de um evento: um item do catálogo + quantidade.
+class ItemOrcamento(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name='itens_orcamento')
+    item = models.ForeignKey(ItemCatalogo, on_delete=models.PROTECT)  # PROTECT: não deixa apagar item do catálogo em uso
+    quantidade = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantidade}× {self.item.nome}"
+
+    @property
+    def subtotal(self):
+        return self.item.preco * self.quantidade
 
 
 # ═══════════════ LANÇAMENTO (financeiro) ═══════════════
