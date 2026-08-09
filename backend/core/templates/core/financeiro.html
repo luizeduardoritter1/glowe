@@ -13,10 +13,28 @@
         </div>
     </div>
 
-    <div class="kpis">
-        <div class="kpi"><span class="k-lbl">Faturamento</span><b class="in">R$ {{ receitas }}</b></div>
+    <div class="kpis kpis-4">
+        <div class="kpi">
+            <span class="k-lbl">Faturamento</span>
+            <b class="in">R$ {{ receitas }}</b>
+            {% if variacao is not None %}<small class="{% if variacao >= 0 %}in{% else %}out{% endif %}">{% if variacao >= 0 %}▲{% else %}▼{% endif %} {{ variacao }}% vs mês anterior</small>{% endif %}
+        </div>
         <div class="kpi"><span class="k-lbl">Despesas</span><b class="out">R$ {{ despesas }}</b></div>
         <div class="kpi accent"><span class="k-lbl">Lucro</span><b>R$ {{ lucro }}</b></div>
+        <div class="kpi"><span class="k-lbl">A receber (eventos)</span><b class="pend">R$ {{ a_receber }}</b></div>
+    </div>
+
+    <div class="panel">
+        <h3>Faturamento — últimos 6 meses</h3>
+        <div class="bars">
+            {% for m in meses %}
+            <div class="bar">
+                <span class="v">{{ m.valor }}</span>
+                <div class="fill" style="height: {{ m.pct }}%"></div>
+                <small>{{ m.data|date:"M" }}</small>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="panel">

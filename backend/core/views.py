@@ -257,19 +257,48 @@ def agenda(request):
 @login_required
 def financeiro(request):
     hoje = date.today()
-    do_mes = Lancamento.objects.filter(data__year=hoje.year, data__month=hoje.month)
 
-    def total(tipo):
-        return do_mes.filter(tipo=tipo).aggregate(t=Sum('valor'))['t'] or 0
+    def receitas_despesas(ano, mes):
+        qs = Lancamento.objects.filter(data__year=ano, data__month=mes)
+        r = qs.filter(tipo=Lancamento.Tipo.RECEITA).aggregate(t=Sum('valor'))['t'] or 0
+        d = qs.filter(tipo=Lancamento.Tipo.DESPESA).aggregate(t=Sum('valor'))['t'] or 0
+        return r, d
 
-    receitas = total(Lancamento.Tipo.RECEITA)
-    despesas = total(Lancamento.Tipo.DESPESA)
+    receitas, despesas = receitas_despesas(hoje.year, hoje.month)
+
+    # Variação do faturamento vs mês anterior
+    mes_ant = hoje.replace(day=1) - timedelta(days=1)
+    receitas_ant, _ = receitas_despesas(mes_ant.year, mes_ant.month)
+    variacao = round((receitas - receitas_ant) / receitas_ant * 100) if receitas_ant else None
+
+    # A receber: soma dos saldos pendentes dos eventos
+    a_receber = sum((e.saldo for e in Evento.objects.all() if e.saldo and e.saldo > 0), 0)
+
+    # Faturamento dos últimos 6 meses (para o gráfico)
+    ano, mes = hoje.year, hoje.month
+    seq = []
+    for _ in range(6):
+        seq.append((ano, mes))
+        mes -= 1
+        if mes == 0:
+            mes, ano = 12, ano - 1
+    seq.reverse()
+    meses = []
+    for (a, m) in seq:
+        r, _ = receitas_despesas(a, m)
+        meses.append({'data': date(a, m, 1), 'valor': r})
+    maxv = max((x['valor'] for x in meses), default=0) or 1
+    for x in meses:
+        x['pct'] = int(x['valor'] / maxv * 100)
 
     contexto = {
         'mes': hoje,
         'receitas': receitas,
         'despesas': despesas,
         'lucro': receitas - despesas,
+        'variacao': variacao,
+        'a_receber': a_receber,
+        'meses': meses,
         'recentes': Lancamento.objects.all()[:8],
     }
     return render(request, 'core/financeiro.html', contexto)
