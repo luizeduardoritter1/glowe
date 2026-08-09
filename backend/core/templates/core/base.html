@@ -44,6 +44,10 @@
 
         .content { min-width: 0; }
         main { max-width: 960px; margin: 0 auto; padding: 28px 32px; }
+        .messages { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+        .msg { padding: 11px 15px; border-radius: 10px; font-size: 14px; font-weight: 500; border: 1px solid; }
+        .msg-success { background: var(--green-soft); color: var(--green); border-color: var(--green); }
+        .msg-error { background: #fdecec; color: #c0392b; border-color: #e6b0aa; }
 
         /* ===== Cabeçalho de página (usar nas telas: .phead) ===== */
         .phead { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
@@ -159,6 +163,13 @@
         </aside>
         <div class="content">
             <main>
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="msg msg-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 {% block conteudo %}{% endblock %}
             </main>
         </div>

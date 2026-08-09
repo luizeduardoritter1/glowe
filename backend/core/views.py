@@ -17,12 +17,26 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import date, timedelta
 from django.db.models import Sum
 
 from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento, ItemOrcamento
 from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm, LancamentoForm, ItemOrcamentoForm
+
+
+# Mixins de feedback — mostram uma mensagem de sucesso após salvar/excluir.
+class MensagemSalvarMixin(SuccessMessageMixin):
+    success_message = 'Salvo com sucesso! ✅'
+
+
+class MensagemExcluirMixin:
+    def form_valid(self, form):
+        resposta = super().form_valid(form)
+        messages.success(self.request, 'Excluído com sucesso.')
+        return resposta
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -40,14 +54,14 @@ class ClienteDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'id'
 
 
-class ClienteCreateView(LoginRequiredMixin, CreateView):
+class ClienteCreateView(LoginRequiredMixin, MensagemSalvarMixin, CreateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Cliente'}
 
 
-class ClienteUpdateView(LoginRequiredMixin, UpdateView):
+class ClienteUpdateView(LoginRequiredMixin, MensagemSalvarMixin, UpdateView):
     model = Cliente
     form_class = ClienteForm
     template_name = 'core/form.html'
@@ -55,7 +69,7 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {'titulo': 'Editar Cliente'}
 
 
-class ClienteDeleteView(LoginRequiredMixin, DeleteView):
+class ClienteDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
     model = Cliente
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'cliente'
@@ -78,14 +92,14 @@ class AgendamentoDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'id'
 
 
-class AgendamentoCreateView(LoginRequiredMixin, CreateView):
+class AgendamentoCreateView(LoginRequiredMixin, MensagemSalvarMixin, CreateView):
     model = Agendamento
     form_class = AgendamentoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Agendamento'}
 
 
-class AgendamentoUpdateView(LoginRequiredMixin, UpdateView):
+class AgendamentoUpdateView(LoginRequiredMixin, MensagemSalvarMixin, UpdateView):
     model = Agendamento
     form_class = AgendamentoForm
     template_name = 'core/form.html'
@@ -93,7 +107,7 @@ class AgendamentoUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {'titulo': 'Editar Agendamento'}
 
 
-class AgendamentoDeleteView(LoginRequiredMixin, DeleteView):
+class AgendamentoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
     model = Agendamento
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'agendamento'
@@ -116,14 +130,14 @@ class ItemCatalogoDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'id'
 
 
-class ItemCatalogoCreateView(LoginRequiredMixin, CreateView):
+class ItemCatalogoCreateView(LoginRequiredMixin, MensagemSalvarMixin, CreateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Item'}
 
 
-class ItemCatalogoUpdateView(LoginRequiredMixin, UpdateView):
+class ItemCatalogoUpdateView(LoginRequiredMixin, MensagemSalvarMixin, UpdateView):
     model = ItemCatalogo
     form_class = ItemCatalogoForm
     template_name = 'core/form.html'
@@ -131,7 +145,7 @@ class ItemCatalogoUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {'titulo': 'Editar Item'}
 
 
-class ItemCatalogoDeleteView(LoginRequiredMixin, DeleteView):
+class ItemCatalogoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
     model = ItemCatalogo
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'item'
@@ -154,14 +168,14 @@ class EventoDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'id'
 
 
-class EventoCreateView(LoginRequiredMixin, CreateView):
+class EventoCreateView(LoginRequiredMixin, MensagemSalvarMixin, CreateView):
     model = Evento
     form_class = EventoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Evento'}
 
 
-class EventoUpdateView(LoginRequiredMixin, UpdateView):
+class EventoUpdateView(LoginRequiredMixin, MensagemSalvarMixin, UpdateView):
     model = Evento
     form_class = EventoForm
     template_name = 'core/form.html'
@@ -169,7 +183,7 @@ class EventoUpdateView(LoginRequiredMixin, UpdateView):
     extra_context = {'titulo': 'Editar Evento'}
 
 
-class EventoDeleteView(LoginRequiredMixin, DeleteView):
+class EventoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
     model = Evento
     template_name = 'core/confirmar_exclusao.html'
     context_object_name = 'evento'
@@ -233,14 +247,14 @@ def financeiro(request):
     return render(request, 'core/financeiro.html', contexto)
 
 
-class LancamentoCreateView(LoginRequiredMixin, CreateView):
+class LancamentoCreateView(LoginRequiredMixin, MensagemSalvarMixin, CreateView):
     model = Lancamento
     form_class = LancamentoForm
     template_name = 'core/form.html'
     extra_context = {'titulo': 'Novo Lançamento'}
 
 
-class LancamentoDeleteView(LoginRequiredMixin, DeleteView):
+class LancamentoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
     model = Lancamento
     template_name = 'core/confirmar_exclusao.html'
     pk_url_kwarg = 'id'
