@@ -379,3 +379,42 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 **Próximos passos**
 - **#9** — estilizar as páginas com a identidade visual do Glowe.
 - **#10** — orçamento enviável (Fase 2).
+
+---
+
+## [09/08/2026] — Sprint 3: Identidade visual (Fase A) + features (Fase B)
+
+**O que fiz hoje**
+- **Estilização** com a identidade do Glowe (cores rosé/ameixa, tipografia serif) e criei o **`mockup-web.html`** com TODAS as telas do app web — vira a referência de layout ("norte visual").
+- **Fase A (alinhar o visual ao mockup):**
+  - Reconstruí o `base.html` com **menu lateral** (sidebar) no lugar da barra de topo;
+  - Listas viraram **tabelas** com cabeçalho de página padrão;
+  - Detalhes viraram **painéis**.
+- **Fase B (features novas):**
+  - **Login / autenticação** — o app agora exige login e protege todas as telas;
+  - **Agenda-calendário** — grade semanal com navegação entre semanas; locale **pt-br** (dias "Seg, Ter...", fuso de São Paulo);
+  - **Financeiro** — novo model `Lancamento` (receita/despesa) + dashboard com KPIs (faturamento, despesas, lucro do mês).
+- Passei a trabalhar no **fluxo IA-no-teclado** (a IA implementa, eu reviso e aprendo lendo), guiado pelas skills do projeto.
+
+**O que aprendi**
+- **Class-Based Views** configuráveis (`template_name`, `context_object_name`, `pk_url_kwarg`, `extra_context`); `get_absolute_url()` define o redirect pós-salvar.
+- Item ativo do menu detectado por `request.path` no template.
+- **Autenticação nativa** do Django: `LoginView`/`LogoutView`, `LoginRequiredMixin`, `LOGIN_URL`/`LOGIN_REDIRECT_URL`; logout precisa ser **POST** no Django 6.
+- Lógica de datas pra montar a semana (`weekday()`, `timedelta`) e filtrar por dia (`data_hora__date`).
+- Agregação no banco com `Sum` (KPIs) e filtro por mês (`data__year` / `data__month`).
+- Filtros de template: `|date`, `|default`, `|yesno`, `|capfirst`; `get_tipo_display`.
+- Locale pt-br muda formatos de data e nomes de dias/meses.
+
+**Dificuldades / como resolvi**
+- Um edit de imports no `views.py` falhou porque a ordem real das linhas era diferente da que supus — e a view nova já usava `Sum`/`Lancamento`. Reli o arquivo, achei a ordem certa e corrigi antes de rodar. (Lição: conferir o arquivo real antes de editar.)
+- Nos "smoke tests" (renderizar páginas via Client de teste) tomei um `400` por `ALLOWED_HOSTS` não ter `testserver` fora do runner — resolvi passando `HTTP_HOST='localhost'`.
+
+**Decisões**
+- **`mockup-web.html` é o norte visual** de todas as telas.
+- Adotei o **menu lateral** (shell do mockup) como estrutura base.
+- Financeiro começa com **lançamentos manuais** (automatizar depois).
+- Skills de IA ficam **fora do repositório** (só local); commits **só no meu nome**.
+
+**Próximos passos**
+- **Orçamento enviável** (#10) — o diferencial: orçamento do evento (itens + total + sinal/saldo) + página pública pra cliente. Exige decisão de modelagem.
+- Depois: **deploy** (colocar no ar) e a Fase 2 do PRD (IA, WhatsApp automático).
