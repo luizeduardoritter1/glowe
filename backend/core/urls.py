@@ -43,4 +43,9 @@ urlpatterns = [
     path('eventos/<int:id>/editar/', views.EventoUpdateView.as_view(), name='editar_evento'),
     path('eventos/<int:id>/excluir/', views.EventoDeleteView.as_view(), name='excluir_evento'),
     path('eventos/<int:id>/', views.EventoDetailView.as_view(), name='detalhe_evento'),
+
+    # ---- Financeiro ----
+    path('financeiro/', views.financeiro, name='financeiro'),
+    path('financeiro/novo/', views.LancamentoCreateView.as_view(), name='novo_lancamento'),
+    path('financeiro/<int:id>/excluir/', views.LancamentoDeleteView.as_view(), name='excluir_lancamento'),
 ]

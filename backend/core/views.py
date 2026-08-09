@@ -19,9 +19,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from datetime import date, timedelta
+from django.db.models import Sum
 
-from .models import Cliente, Agendamento, ItemCatalogo, Evento
-from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm
+from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento
+from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm, LancamentoForm
 
 
 # ═══════════════ CLIENTE ═══════════════
@@ -207,3 +208,40 @@ def agenda(request):
         'prox': off + 1,
     }
     return render(request, 'core/agenda.html', contexto)
+
+
+# ═══════════════ FINANCEIRO ═══════════════
+
+@login_required
+def financeiro(request):
+    hoje = date.today()
+    do_mes = Lancamento.objects.filter(data__year=hoje.year, data__month=hoje.month)
+
+    def total(tipo):
+        return do_mes.filter(tipo=tipo).aggregate(t=Sum('valor'))['t'] or 0
+
+    receitas = total(Lancamento.Tipo.RECEITA)
+    despesas = total(Lancamento.Tipo.DESPESA)
+
+    contexto = {
+        'mes': hoje,
+        'receitas': receitas,
+        'despesas': despesas,
+        'lucro': receitas - despesas,
+        'recentes': Lancamento.objects.all()[:8],
+    }
+    return render(request, 'core/financeiro.html', contexto)
+
+
+class LancamentoCreateView(LoginRequiredMixin, CreateView):
+    model = Lancamento
+    form_class = LancamentoForm
+    template_name = 'core/form.html'
+    extra_context = {'titulo': 'Novo Lançamento'}
+
+
+class LancamentoDeleteView(LoginRequiredMixin, DeleteView):
+    model = Lancamento
+    template_name = 'core/confirmar_exclusao.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('financeiro')

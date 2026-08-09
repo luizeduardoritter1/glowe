@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}Financeiro — Glowe{% endblock %}
+
+{% block conteudo %}
+    <div class="phead">
+        <div>
+            <h2>Financeiro</h2>
+            <p class="sub">{{ mes|date:"F Y"|capfirst }}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta" href="{% url 'novo_lancamento' %}">+ Lançar</a>
+        </div>
+    </div>
+
+    <div class="kpis">
+        <div class="kpi"><span class="k-lbl">Faturamento</span><b class="in">R$ {{ receitas }}</b></div>
+        <div class="kpi"><span class="k-lbl">Despesas</span><b class="out">R$ {{ despesas }}</b></div>
+        <div class="kpi accent"><span class="k-lbl">Lucro</span><b>R$ {{ lucro }}</b></div>
+    </div>
+
+    <div class="panel">
+        <h3>Movimentações recentes</h3>
+        <table class="tbl mini">
+            {% for l in recentes %}
+            <tr>
+                <td>{{ l.descricao }}</td>
+                <td>{{ l.data|date:"d/m/Y" }}</td>
+                <td class="ta-r {% if l.tipo == 'RECEITA' %}in{% else %}out{% endif %}">
+                    {% if l.tipo == 'RECEITA' %}+{% else %}−{% endif %} R$ {{ l.valor }}
+                </td>
+                <td class="ta-r"><a href="{% url 'excluir_lancamento' l.id %}">excluir</a></td>
+            </tr>
+            {% empty %}
+            <tr><td>Nenhum lançamento ainda. Clique em "+ Lançar" pra registrar receitas e despesas.</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -149,3 +149,27 @@ class Evento(models.Model):
 
     def get_absolute_url(self):
         return reverse('detalhe_evento', kwargs={'id': self.id})
+
+
+# ═══════════════ LANÇAMENTO (financeiro) ═══════════════
+# Uma entrada (receita) ou saída (despesa) de dinheiro, lançada manualmente.
+class Lancamento(models.Model):
+    class Tipo(models.TextChoices):
+        RECEITA = 'RECEITA', 'Receita'
+        DESPESA = 'DESPESA', 'Despesa'
+
+    descricao = models.CharField(max_length=120)
+    tipo = models.CharField(max_length=10, choices=Tipo.choices, default=Tipo.RECEITA)
+    valor = models.DecimalField(max_digits=8, decimal_places=2)
+    data = models.DateField()
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-data']   # mais recentes primeiro
+
+    def __str__(self):
+        return f"{self.get_tipo_display()} · {self.descricao} · R$ {self.valor}"
+
+    def get_absolute_url(self):
+        # Sem página de detalhe própria; volta pro dashboard financeiro.
+        return reverse('financeiro')
