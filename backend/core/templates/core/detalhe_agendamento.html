@@ -32,6 +32,7 @@
             <p><strong>Cliente:</strong> {{ agendamento.cliente.nome }}</p>
             <p><strong>Evento:</strong> {% if agendamento.evento %}<a href="{% url 'detalhe_evento' agendamento.evento.id %}">{{ agendamento.evento.nome }}</a>{% else %}—{% endif %}</p>
             <p><strong>Status:</strong> {{ agendamento.get_status_display }}</p>
+            <p><strong>Local:</strong> {{ agendamento.get_local_display }}{% if agendamento.endereco %} — {{ agendamento.endereco }}{% endif %}</p>
             <p><strong>Observações:</strong> {{ agendamento.observacoes|default:"—" }}</p>
         </div>
     </div>

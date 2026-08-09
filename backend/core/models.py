@@ -79,6 +79,10 @@ class Agendamento(models.Model):
         CONCLUIDO = 'CONCLUIDO', 'Concluido'
         CANCELADO = 'CANCELADO', 'Cancelado'
 
+    class LocalAtendimento(models.TextChoices):
+        ESTUDIO = 'ESTUDIO', 'Estúdio'
+        DOMICILIO = 'DOMICILIO', 'Domicílio'
+
     # ForeignKey = relação "um-para-muitos": 1 cliente tem vários agendamentos.
     # on_delete=CASCADE → se apagar o cliente, apaga os agendamentos dele junto.
     cliente = models.ForeignKey(
@@ -106,6 +110,8 @@ class Agendamento(models.Model):
         choices=StatusAgendamento.choices,
         default=StatusAgendamento.AGENDADO
     )
+    local = models.CharField(max_length=20, choices=LocalAtendimento.choices, default=LocalAtendimento.ESTUDIO)
+    endereco = models.CharField(max_length=200, blank=True)  # usado quando o atendimento é em domicílio
     observacoes = models.TextField(blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
 
