@@ -21,7 +21,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from datetime import date, timedelta
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
 from .models import Cliente, Agendamento, ItemCatalogo, Evento, Lancamento, ItemOrcamento
 from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm, LancamentoForm, ItemOrcamentoForm
@@ -39,12 +39,33 @@ class MensagemExcluirMixin:
         return resposta
 
 
+class BuscaMixin:
+    # Filtra a lista pelo termo em ?q= nos campos definidos em campos_busca.
+    campos_busca = []
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        termo = self.request.GET.get('q', '').strip()
+        if termo and self.campos_busca:
+            filtro = Q()
+            for campo in self.campos_busca:
+                filtro |= Q(**{f'{campo}__icontains': termo})
+            qs = qs.filter(filtro)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['q'] = self.request.GET.get('q', '')
+        return ctx
+
+
 # ═══════════════ CLIENTE ═══════════════
 
-class ClienteListView(LoginRequiredMixin, ListView):
+class ClienteListView(LoginRequiredMixin, BuscaMixin, ListView):
     model = Cliente
     template_name = 'core/lista_clientes.html'
     context_object_name = 'clientes'
+    campos_busca = ['nome', 'telefone']
 
 
 class ClienteDetailView(LoginRequiredMixin, DetailView):
@@ -79,7 +100,7 @@ class ClienteDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView):
 
 # ═══════════════ AGENDAMENTO ═══════════════
 
-class AgendamentoListView(LoginRequiredMixin, ListView):
+class AgendamentoListView(LoginRequiredMixin, BuscaMixin, ListView):
     model = Agendamento
     template_name = 'core/lista_agendamentos.html'
     context_object_name = 'agendamentos'
@@ -117,10 +138,11 @@ class AgendamentoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteView
 
 # ═══════════════ CATÁLOGO (ItemCatalogo) ═══════════════
 
-class ItemCatalogoListView(LoginRequiredMixin, ListView):
+class ItemCatalogoListView(LoginRequiredMixin, BuscaMixin, ListView):
     model = ItemCatalogo
     template_name = 'core/lista_catalogo.html'
     context_object_name = 'itens'
+    campos_busca = ['nome']
 
 
 class ItemCatalogoDetailView(LoginRequiredMixin, DetailView):
@@ -155,10 +177,11 @@ class ItemCatalogoDeleteView(LoginRequiredMixin, MensagemExcluirMixin, DeleteVie
 
 # ═══════════════ EVENTO ═══════════════
 
-class EventoListView(LoginRequiredMixin, ListView):
+class EventoListView(LoginRequiredMixin, BuscaMixin, ListView):
     model = Evento
     template_name = 'core/lista_eventos.html'
     context_object_name = 'eventos'
+    campos_busca = ['nome', 'cliente__nome']
 
 
 class EventoDetailView(LoginRequiredMixin, DetailView):

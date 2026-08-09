@@ -9,6 +9,7 @@
             <p class="sub">Trabalhos grandes (casamentos, 15 anos...)</p>
         </div>
         <div class="phead-r">
+            <form method="get" class="searchbar"><input type="search" name="q" value="{{ q }}" placeholder="Buscar evento..." class="search"></form>
             <a class="cta" href="{% url 'novo_evento' %}">+ Novo evento</a>
         </div>
     </div>
@@ -26,7 +27,7 @@
                 <td>{{ evento.cliente.nome }}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="4">Nenhum evento cadastrado ainda.</td></tr>
+            <tr><td colspan="4">{% if q %}Nenhum evento encontrado para "{{ q }}".{% else %}Nenhum evento ainda. Clique em "+ Novo evento" para começar.{% endif %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

@@ -9,6 +9,7 @@
             <p class="sub">Serviços e adicionais</p>
         </div>
         <div class="phead-r">
+            <form method="get" class="searchbar"><input type="search" name="q" value="{{ q }}" placeholder="Buscar item..." class="search"></form>
             <a class="cta" href="{% url 'novo_item' %}">+ Novo item</a>
         </div>
     </div>
@@ -27,7 +28,7 @@
                 <td class="ta-r">{% if item.custo %}R$ {{ item.custo }}{% else %}—{% endif %}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="5">Nenhum item cadastrado ainda.</td></tr>
+            <tr><td colspan="5">{% if q %}Nenhum item encontrado para "{{ q }}".{% else %}Nenhum item ainda. Clique em "+ Novo item" para começar.{% endif %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

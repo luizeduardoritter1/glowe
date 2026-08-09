@@ -9,6 +9,7 @@
             <p class="sub">{{ clientes|length }} cliente{{ clientes|length|pluralize }}</p>
         </div>
         <div class="phead-r">
+            <form method="get" class="searchbar"><input type="search" name="q" value="{{ q }}" placeholder="Buscar cliente..." class="search"></form>
             <a class="cta" href="{% url 'novo_cliente' %}">+ Novo cliente</a>
         </div>
     </div>
@@ -26,7 +27,7 @@
                 <td class="ta-r">{{ cliente.agendamentos.count }}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="4">Nenhum cliente cadastrado ainda.</td></tr>
+            <tr><td colspan="4">{% if q %}Nenhum cliente encontrado para "{{ q }}".{% else %}Nenhum cliente ainda. Clique em "+ Novo cliente" para começar.{% endif %}</td></tr>
             {% endfor %}
         </tbody>
     </table>
