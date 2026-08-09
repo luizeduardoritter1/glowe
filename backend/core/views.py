@@ -237,12 +237,17 @@ def agenda(request):
             'hoje': d == hoje,
         })
 
+    fim = inicio + timedelta(days=6)
+    da_semana = Agendamento.objects.filter(data_hora__date__gte=inicio, data_hora__date__lte=fim)
     contexto = {
         'dias': dias,
         'inicio': inicio,
-        'fim': inicio + timedelta(days=6),
+        'fim': fim,
         'ant': off - 1,
         'prox': off + 1,
+        'total_atendimentos': da_semana.count(),
+        'total_eventos': da_semana.exclude(evento=None).values('evento').distinct().count(),
+        'total_previsto': sum((a.valor_total for a in da_semana), 0),
     }
     return render(request, 'core/agenda.html', contexto)
 

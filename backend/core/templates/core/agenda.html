@@ -15,14 +15,21 @@
         </div>
     </div>
 
+    <div class="kpis">
+        <div class="kpi"><span class="k-lbl">Atendimentos</span><b>{{ total_atendimentos }}</b></div>
+        <div class="kpi"><span class="k-lbl">Eventos</span><b>{{ total_eventos }}</b></div>
+        <div class="kpi accent"><span class="k-lbl">Previsto na semana</span><b>R$ {{ total_previsto }}</b></div>
+    </div>
+
     <div class="wk">
         {% for dia in dias %}
         <div class="wk-col{% if dia.hoje %} today{% endif %}">
             <div class="wk-day"><b>{{ dia.data|date:"D" }}</b>{{ dia.data|date:"d/m" }}</div>
             <div class="wk-body">
                 {% for a in dia.agendamentos %}
-                <a class="ev" href="{% url 'detalhe_agendamento' a.id %}">
+                <a class="ev{% if a.evento %} e-ev{% elif a.local == 'DOMICILIO' %} e-dom{% endif %}" href="{% url 'detalhe_agendamento' a.id %}">
                     <b>{{ a.data_hora|date:"H:i" }} · {{ a.cliente.nome }}</b>
+                    <span>{% if a.evento %}◆ {{ a.evento.nome }}{% else %}{{ a.get_local_display }}{% endif %}</span>
                 </a>
                 {% endfor %}
             </div>
