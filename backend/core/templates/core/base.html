@@ -4,23 +4,66 @@
     <meta charset="utf-8">
     <title>{% block titulo %}Glowe{% endblock %}</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #faf7f8; color: #241b24; }
+        :root {
+            --rose: #bc3c6a;
+            --plum: #8e2a50;
+            --rose-soft: #f9e6ee;
+            --bg: #faf7f8;
+            --surface: #ffffff;
+            --ink: #241b24;
+            --ink-soft: #6b5f68;
+            --line: #ece2e9;
+            --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: var(--sans); margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+        /* Cabeçalho e navegação */
         header {
-            background: #8e2a50;
-            color: #fff;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            gap: 28px;
+            background: linear-gradient(135deg, var(--plum), var(--rose));
+            color: #fff; padding: 16px 24px;
+            display: flex; align-items: center; gap: 28px;
+            box-shadow: 0 2px 12px rgba(142, 42, 80, 0.25);
         }
-        header h1 { margin: 0; font-size: 1.3rem; }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            opacity: 0.85;
-            margin-right: 16px;
+        header h1 { margin: 0; font-family: var(--serif); font-size: 1.35rem; }
+        nav { display: flex; gap: 4px; flex-wrap: wrap; }
+        nav a { color: #fff; text-decoration: none; opacity: 0.9; padding: 6px 12px; border-radius: 8px; font-size: 0.95rem; }
+        nav a:hover { background: rgba(255, 255, 255, 0.18); opacity: 1; }
+
+        /* Conteúdo */
+        main { max-width: 820px; margin: 28px auto; padding: 0 20px; }
+        h2 { font-family: var(--serif); color: var(--plum); font-size: 1.6rem; margin: 0 0 18px; }
+        h3 { font-family: var(--serif); color: var(--ink); font-size: 1.2rem; margin: 24px 0 10px; }
+        p { margin: 0 0 12px; }
+        a { color: var(--rose); }
+
+        /* Listas viram cards */
+        main ul { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-direction: column; gap: 10px; }
+        main li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(60, 20, 45, 0.04); }
+        main li a { font-weight: 600; text-decoration: none; }
+        main li a:hover { text-decoration: underline; }
+
+        /* Ações em destaque: links soltos no conteúdo + botões de formulário */
+        main > a, main button, form button {
+            display: inline-block; background: var(--rose); color: #fff; border: none;
+            border-radius: 10px; padding: 10px 18px; font-size: 0.95rem; font-weight: 600;
+            text-decoration: none; cursor: pointer; margin: 4px 8px 4px 0;
         }
-        main { max-width: 800px; margin: 24px auto; padding: 0 24px; }
+        main > a:hover, main button:hover, form button:hover { background: var(--plum); }
+
+        /* Formulários (o {{ form.as_p }} gera <p><label></label> <input></p>) */
+        form { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: 0 4px 16px rgba(60, 20, 45, 0.05); }
+        form p { display: flex; flex-direction: column; gap: 6px; margin: 0 0 14px; }
+        form label { font-weight: 600; font-size: 0.85rem; color: var(--ink-soft); }
+        form input, form select, form textarea {
+            font-family: inherit; font-size: 0.95rem; width: 100%;
+            padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
+            background: #fff; color: var(--ink);
+        }
+        form input:focus, form select:focus, form textarea:focus { outline: 2px solid var(--rose-soft); border-color: var(--rose); }
+        /* "Cancelar" dentro do form fica como link discreto, não botão */
+        form a { display: inline-block; margin-left: 10px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
