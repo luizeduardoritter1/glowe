@@ -4,3 +4,6 @@ __pycache__/
 .env
 db.sqlite3
 .DS_Store
+
+# Skills de IA (dev-senior, arquiteto, tech-lead) — mantidas apenas localmente
+.claude/skills/
