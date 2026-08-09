@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block titulo %}Agenda — Glowe{% endblock %}
+
+{% block conteudo %}
+    <div class="phead">
+        <div>
+            <h2>Agenda</h2>
+            <p class="sub">{{ inicio|date:"d/m" }} – {{ fim|date:"d/m/Y" }}</p>
+        </div>
+        <div class="phead-r">
+            <a class="cta ghost" href="?semana={{ ant }}">← Anterior</a>
+            <a class="cta ghost" href="?semana={{ prox }}">Próxima →</a>
+            <a class="cta" href="{% url 'novo_agendamento' %}">+ Novo agendamento</a>
+        </div>
+    </div>
+
+    <div class="wk">
+        {% for dia in dias %}
+        <div class="wk-col{% if dia.hoje %} today{% endif %}">
+            <div class="wk-day"><b>{{ dia.data|date:"D" }}</b>{{ dia.data|date:"d/m" }}</div>
+            <div class="wk-body">
+                {% for a in dia.agendamentos %}
+                <a class="ev" href="{% url 'detalhe_agendamento' a.id %}">
+                    <b>{{ a.data_hora|date:"H:i" }} · {{ a.cliente.nome }}</b>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

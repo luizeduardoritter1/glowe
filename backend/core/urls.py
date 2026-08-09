@@ -20,6 +20,9 @@ urlpatterns = [
     path('clientes/<int:id>/excluir/', views.ClienteDeleteView.as_view(), name='excluir_cliente'),
     path('clientes/<int:id>/', views.ClienteDetailView.as_view(), name='detalhe_cliente'),
 
+    # ---- Agenda (calendário semanal) ----
+    path('agenda/', views.agenda, name='agenda'),
+
     # ---- Agendamentos ----
     path('agendamentos/', views.AgendamentoListView.as_view(), name='lista_agendamentos'),
     path('agendamentos/novo/', views.AgendamentoCreateView.as_view(), name='novo_agendamento'),

@@ -16,6 +16,9 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from datetime import date, timedelta
 
 from .models import Cliente, Agendamento, ItemCatalogo, Evento
 from .forms import ClienteForm, AgendamentoForm, ItemCatalogoForm, EventoForm
@@ -171,3 +174,36 @@ class EventoDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'evento'
     pk_url_kwarg = 'id'
     success_url = reverse_lazy('lista_eventos')
+
+
+# ═══════════════ AGENDA (calendário semanal) ═══════════════
+
+@login_required
+def agenda(request):
+    # 'semana' é um deslocamento em semanas: 0 = atual, -1 = anterior, 1 = próxima.
+    try:
+        off = int(request.GET.get('semana', 0))
+    except (TypeError, ValueError):
+        off = 0
+
+    hoje = date.today()
+    # segunda-feira da semana escolhida (weekday(): segunda=0 ... domingo=6)
+    inicio = hoje - timedelta(days=hoje.weekday()) + timedelta(weeks=off)
+
+    dias = []
+    for i in range(7):
+        d = inicio + timedelta(days=i)
+        dias.append({
+            'data': d,
+            'agendamentos': Agendamento.objects.filter(data_hora__date=d).order_by('data_hora'),
+            'hoje': d == hoje,
+        })
+
+    contexto = {
+        'dias': dias,
+        'inicio': inicio,
+        'fim': inicio + timedelta(days=6),
+        'ant': off - 1,
+        'prox': off + 1,
+    }
+    return render(request, 'core/agenda.html', contexto)
