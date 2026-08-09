@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glowe — Mockup Web (todas as telas)</title>
+</head>
+<body>
+
+<!-- ===== Sprite de ícones (definido uma vez, reusado no menu) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-agenda" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></symbol>
+    <symbol id="ic-clientes" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0113 0"/></symbol>
+    <symbol id="ic-catalogo" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+    <symbol id="ic-eventos" viewBox="0 0 24 24"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.3l5-.7z"/></symbol>
+    <symbol id="ic-financeiro" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18"/></symbol>
+  </defs>
+</svg>
+
+<header class="show-head">
+  <div class="show-brand"><span class="show-mark"></span>Glowe</div>
+  <p class="show-eyebrow">Mockup · versão WEB · todas as telas</p>
+  <h1>Mapa visual do app web</h1>
+  <p class="show-lede">Todas as telas da versão desktop, no mesmo shell (menu lateral + conteúdo). Maquete não-funcional, com dados da rotina da Marina — serve pra guiar a estilização real do app.</p>
+</header>
+
+<!-- ============================================================= 1. LOGIN -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>1 · Login</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/login</span></div>
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="login-logo"><span class="show-mark"></span> Glowe</div>
+        <p class="login-sub">Entre na sua conta</p>
+        <label class="fld"><span>E-mail</span><input value="marina@estudio.com"></label>
+        <label class="fld"><span>Senha</span><input type="password" value="••••••••"></label>
+        <button class="cta full">Entrar</button>
+        <p class="login-foot">Não tem conta? <a>Comece o teste grátis</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 2. AGENDA -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>2 · Agenda (tela inicial)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/agenda</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a class="on"><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead">
+          <div><h2>Agenda</h2><p class="sub">Semana de 7–13 de julho</p></div>
+          <div class="phead-r"><div class="seg"><button>Dia</button><button class="on">Semana</button><button>Mês</button></div><button class="cta">+ Novo agendamento</button></div>
+        </div>
+        <div class="wk">
+          <div class="wk-col"><div class="wk-day"><b>Seg</b>7</div><div class="ev e-mk" style="top:12%"><b>Aline T.</b><span>Maquiagem · 10h</span></div></div>
+          <div class="wk-col"><div class="wk-day"><b>Ter</b>8</div><div class="ev e-pt" style="top:28%"><b>Rafaela M.</b><span>Penteado · 14h</span></div></div>
+          <div class="wk-col"><div class="wk-day"><b>Qua</b>9</div></div>
+          <div class="wk-col"><div class="wk-day"><b>Qui</b>10</div><div class="ev e-ev" style="top:20%"><b>◆ Júlia — Prova</b><span>15h</span></div></div>
+          <div class="wk-col"><div class="wk-day"><b>Sex</b>11</div><div class="ev e-mk" style="top:44%"><b>Bruna L.</b><span>Maquiagem · 16h30</span></div></div>
+          <div class="wk-col today"><div class="wk-day"><b>Sáb</b>12</div><div class="ev e-pt" style="top:8%"><b>Carla S.</b><span>Penteado · 9h</span></div><div class="ev e-ev" style="top:52%"><b>◆ Júlia</b><span>14h · Estúdio</span></div></div>
+          <div class="wk-col"><div class="wk-day"><b>Dom</b>13</div><span class="wk-off">Folga</span></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 3. CLIENTES (lista) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>3 · Clientes (lista)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/clientes</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a class="on"><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead">
+          <div><h2>Clientes</h2><p class="sub">18 clientes</p></div>
+          <div class="phead-r"><input class="search" placeholder="Buscar cliente..."><button class="cta">+ Novo cliente</button></div>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>Nome</th><th>Telefone</th><th>Aniversário</th><th>Atendimentos</th><th></th></tr></thead>
+          <tbody>
+            <tr><td><span class="av sm">J</span> Júlia Mendes</td><td>(51) 9 9888-1234</td><td>20 mar</td><td>4</td><td class="ta-r"><a>ver</a></td></tr>
+            <tr><td><span class="av sm">C</span> Carla Souza</td><td>(51) 9 9777-4321</td><td>02 ago</td><td>7</td><td class="ta-r"><a>ver</a></td></tr>
+            <tr><td><span class="av sm">A</span> Aline Torres</td><td>(51) 9 9666-8899</td><td>15 dez</td><td>3</td><td class="ta-r"><a>ver</a></td></tr>
+            <tr><td><span class="av sm">B</span> Bruna Lima</td><td>(51) 9 9555-1122</td><td>—</td><td>2</td><td class="ta-r"><a>ver</a></td></tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 4. CLIENTE (detalhe) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>4 · Cliente (detalhe)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/clientes/1</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a class="on"><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead">
+          <div class="phead-cli"><span class="av lg">J</span><div><h2>Júlia Mendes</h2><p class="sub">(51) 9 9888-1234 · 🎂 20 mar</p><div class="chips"><span class="chip chip-event">Noiva</span><span class="chip">VIP</span></div></div></div>
+          <div class="phead-r"><button class="cta ghost">✏️ Editar</button><button class="cta wa">Chamar no WhatsApp</button></div>
+        </div>
+        <div class="cols">
+          <div class="panel">
+            <h3>Próximo</h3>
+            <div class="ev-row"><span class="ev-dot">◆</span><div class="grow"><b>Casamento da Júlia</b><small>15 nov · Gramado</small></div><span class="chip chip-amber">Sinal pago</span></div>
+            <h3>Histórico</h3>
+            <table class="tbl mini">
+              <tr><td>12 jul</td><td>Maquiagem social</td><td class="ta-r">R$ 220</td></tr>
+              <tr><td>28 mai</td><td>Penteado</td><td class="ta-r">R$ 250</td></tr>
+              <tr><td>14 fev</td><td>Maquiagem + penteado</td><td class="ta-r">R$ 480</td></tr>
+            </table>
+          </div>
+          <div class="panel soft">
+            <h3>Anamnese &amp; notas</h3>
+            <p class="notes"><b>Pele:</b> mista, sensível na zona T.<br><b>Alergia:</b> níquel.<br><b>Prefere:</b> tons neutros, pele natural.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 5. CATÁLOGO (lista) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>5 · Catálogo (serviços e adicionais)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/catalogo</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a class="on"><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead"><div><h2>Catálogo</h2><p class="sub">Serviços e adicionais</p></div><div class="phead-r"><button class="cta">+ Novo item</button></div></div>
+        <table class="tbl">
+          <thead><tr><th>Item</th><th>Tipo</th><th>Duração</th><th class="ta-r">Preço</th><th class="ta-r">Custo</th></tr></thead>
+          <tbody>
+            <tr><td>Maquiagem noiva</td><td><span class="chip">Serviço</span></td><td>1h30</td><td class="ta-r">R$ 350</td><td class="ta-r">—</td></tr>
+            <tr><td>Maquiagem social</td><td><span class="chip">Serviço</span></td><td>1h</td><td class="ta-r">R$ 220</td><td class="ta-r">—</td></tr>
+            <tr><td>Penteado</td><td><span class="chip">Serviço</span></td><td>1h</td><td class="ta-r">R$ 250</td><td class="ta-r">—</td></tr>
+            <tr><td>Filmagem do preparo</td><td><span class="chip chip-loc">Adicional</span></td><td>—</td><td class="ta-r">R$ 500</td><td class="ta-r">R$ 200</td></tr>
+            <tr><td>Coffee break</td><td><span class="chip chip-loc">Adicional</span></td><td>—</td><td class="ta-r">R$ 300</td><td class="ta-r">R$ 120</td></tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 6. EVENTOS (lista) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>6 · Eventos (lista)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/eventos</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a class="on"><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead"><div><h2>Eventos</h2><p class="sub">Trabalhos grandes (casamentos, 15 anos...)</p></div><div class="phead-r"><button class="cta">+ Novo evento</button></div></div>
+        <table class="tbl">
+          <thead><tr><th>Evento</th><th>Tipo</th><th>Data</th><th>Cliente</th><th class="ta-r">Saldo</th></tr></thead>
+          <tbody>
+            <tr><td>◆ Casamento da Júlia</td><td><span class="chip chip-event">Casamento</span></td><td>15 nov 2026</td><td>Júlia Mendes</td><td class="ta-r pend">R$ 1.300</td></tr>
+            <tr><td>◆ 15 anos da Sofia</td><td><span class="chip chip-event">15 anos</span></td><td>03 out 2026</td><td>Sofia Braga</td><td class="ta-r in">Quitado</td></tr>
+            <tr><td>◆ Ensaio da Marta</td><td><span class="chip">Ensaio</span></td><td>22 set 2026</td><td>Marta Reis</td><td class="ta-r pend">R$ 400</td></tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 7. EVENTO (detalhe + orçamento) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>7 · Evento (detalhe, com orçamento)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/eventos/1</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a class="on"><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead"><div><p class="ey">◆ Evento</p><h2>Casamento da Júlia</h2><p class="sub">Casamento · 15 nov 2026 · Espaço Green, Gramado</p></div><div class="phead-r"><button class="cta ghost">✏️ Editar</button><button class="cta">Enviar orçamento</button></div></div>
+        <div class="cols">
+          <div class="panel">
+            <h3>Orçamento</h3>
+            <table class="tbl mini">
+              <tr><td>Maquiagem noiva</td><td class="ta-r">R$ 350</td></tr>
+              <tr><td>Penteado noiva</td><td class="ta-r">R$ 250</td></tr>
+              <tr><td>Maquiagem madrinhas ×2</td><td class="ta-r">R$ 400</td></tr>
+              <tr><td>Coffee break</td><td class="ta-r">R$ 300</td></tr>
+              <tr><td>Filmagem do preparo</td><td class="ta-r">R$ 500</td></tr>
+            </table>
+            <div class="tot"><span>Total</span><b>R$ 1.800</b></div>
+            <h3>Agendamentos vinculados</h3>
+            <div class="ev-row"><span class="ev-dot">◆</span><div class="grow"><b>Prova de maquiagem</b><small>02 nov · 14h · Estúdio</small></div></div>
+            <div class="ev-row"><span class="ev-dot">◆</span><div class="grow"><b>Dia do evento</b><small>15 nov · 06h · Gramado</small></div></div>
+          </div>
+          <div class="panel soft">
+            <h3>Financeiro do evento</h3>
+            <div class="money"><span>Valor total</span><b>R$ 1.800</b></div>
+            <div class="money"><span>Sinal (reserva)</span><b class="in">R$ 500 ✓</b></div>
+            <div class="money"><span>Saldo</span><b class="pend">R$ 1.300</b></div>
+            <div class="goal"><span class="goal-fill" style="width:28%"></span></div>
+            <p class="sub">28% pago</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 8. FORMULÁRIO (novo/editar) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>8 · Formulário (novo / editar)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/agendamentos/novo</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a class="on"><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead"><div><h2>Novo agendamento</h2><p class="sub">Preencha os dados do atendimento</p></div></div>
+        <div class="form-card">
+          <label class="fld"><span>Cliente</span><select><option>Júlia Mendes</option></select></label>
+          <label class="fld"><span>Itens</span><select multiple size="3"><option selected>Maquiagem noiva</option><option selected>Penteado</option><option>Coffee break</option></select></label>
+          <div class="fld-row">
+            <label class="fld"><span>Data e hora</span><input value="15/11/2026 06:00"></label>
+            <label class="fld"><span>Status</span><select><option>Agendado</option><option>Concluído</option><option>Cancelado</option></select></label>
+          </div>
+          <label class="fld"><span>Vincular a um evento (opcional)</span><select><option>Casamento da Júlia</option><option>—</option></select></label>
+          <label class="fld"><span>Observações</span><textarea rows="2"></textarea></label>
+          <div class="form-actions"><button class="cta">Salvar</button><a class="cancel">Cancelar</a></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 9. FINANCEIRO -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>9 · Financeiro (dashboard)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">app.glowe.com.br/financeiro</span></div>
+    <div class="app">
+      <aside class="side">
+        <div class="logo"><span class="show-mark sm"></span>Glowe</div>
+        <nav class="nav">
+          <a><svg class="ic"><use href="#ic-agenda"/></svg>Agenda</a>
+          <a><svg class="ic"><use href="#ic-clientes"/></svg>Clientes</a>
+          <a><svg class="ic"><use href="#ic-catalogo"/></svg>Catálogo</a>
+          <a><svg class="ic"><use href="#ic-eventos"/></svg>Eventos</a>
+          <a class="on"><svg class="ic"><use href="#ic-financeiro"/></svg>Financeiro</a>
+        </nav>
+        <div class="side-foot"><span class="av">M</span><div><b>Marina Alves</b><small>Plano Pro</small></div></div>
+      </aside>
+      <main class="main">
+        <div class="phead"><div><h2>Financeiro</h2><p class="sub">Julho 2026</p></div><div class="phead-r"><button class="cta ghost">Julho 2026 ▾</button><button class="cta">+ Lançar</button></div></div>
+        <div class="kpis">
+          <div class="kpi"><span class="k-lbl">Faturamento</span><b class="in">R$ 6.800</b><small class="up">▲ 12%</small></div>
+          <div class="kpi"><span class="k-lbl">Despesas</span><b class="out">R$ 2.550</b><small>fixas + variáveis</small></div>
+          <div class="kpi accent"><span class="k-lbl">Lucro</span><b>R$ 4.250</b><small class="up">▲ 18%</small></div>
+          <div class="kpi"><span class="k-lbl">A receber</span><b class="pend">R$ 1.300</b><small>1 evento</small></div>
+        </div>
+        <div class="fin-grid">
+          <div class="panel">
+            <h3>Faturamento por mês</h3>
+            <svg class="chart" viewBox="0 0 520 180" preserveAspectRatio="none">
+              <line x1="0" y1="45" x2="520" y2="45"/><line x1="0" y1="90" x2="520" y2="90"/><line x1="0" y1="135" x2="520" y2="135"/>
+              <polygon class="area" points="10,130 95,110 180,122 265,80 350,96 435,140 510,64 510,175 10,175"/>
+              <polyline class="line" points="10,130 95,110 180,122 265,80 350,96 435,140 510,64"/>
+              <circle class="pt" cx="510" cy="64" r="5"/>
+            </svg>
+            <div class="chart-x"><span>fev</span><span>mar</span><span>abr</span><span>mai</span><span>jun</span><span>jul</span></div>
+          </div>
+          <div class="panel">
+            <h3>Meta do mês</h3>
+            <p class="goal-big">85%</p>
+            <div class="goal"><span class="goal-fill" style="width:85%"></span></div>
+            <p class="sub">R$ 6.800 de R$ 8.000</p>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Movimentações recentes</h3>
+          <table class="tbl mini">
+            <tr><td><span class="tx in">＋</span> Maquiagem · Aline Torres</td><td>12 jul</td><td class="ta-r in">+ R$ 220</td></tr>
+            <tr><td><span class="tx in">＋</span> Sinal · Casamento Júlia</td><td>10 jul</td><td class="ta-r in">+ R$ 500</td></tr>
+            <tr><td><span class="tx out">－</span> Cosméticos · reposição</td><td>8 jul</td><td class="ta-r out">− R$ 340</td></tr>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= 10. ORÇAMENTO ENVIÁVEL (cliente) -->
+<section class="scr">
+  <div class="scr-label"><span class="dot"></span>10 · Orçamento enviável — o que a cliente recebe (público)</div>
+  <div class="frame"><div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url">glowe.com.br/orcamento/julia-casamento</span></div>
+    <div class="pub">
+      <div class="pub-card">
+        <div class="pub-top"><div class="by"><span class="av">M</span> Marina Alves · Maquiagem &amp; Penteado</div><h3>Orçamento — Casamento</h3><p>Para Júlia Mendes · 15 de novembro de 2026</p></div>
+        <div class="pub-body">
+          <div class="pub-item"><span>Maquiagem — noiva</span><b>R$ 350</b></div>
+          <div class="pub-item"><span>Penteado — noiva</span><b>R$ 250</b></div>
+          <div class="pub-item"><span>Maquiagem — madrinhas ×2</span><b>R$ 400</b></div>
+          <div class="pub-item"><span>Coffee break</span><b>R$ 300</b></div>
+          <div class="pub-item"><span>Filmagem do preparo</span><b>R$ 500</b></div>
+          <div class="pub-tot"><span>Valor total</span><b>R$ 1.800</b></div>
+          <div class="pub-sinal">Para reservar sua data, um sinal de <b>R$ 500</b> · saldo de R$ 1.300 até o evento.</div>
+          <button class="cta wa full">Aceitar e pagar sinal via Pix</button>
+          <p class="pub-val">Válido até 30/07/2026 · feito com Glowe</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="show-foot"><p><b>Maquete não-funcional</b> — direção visual do app web do Glowe. Dados ilustrativos da rotina da Marina.</p></footer>
+
+<style>
+  :root{
+    --bg:#EDE6EA; --app-bg:#F5F1F3; --sf:#FFFFFF; --sf2:#F7F2F5;
+    --ink:#241B24; --ink2:#6B5F68; --ink3:#A093A0; --line:#ECE2E9; --pg-line:#DCD0D8;
+    --rose:#BC3C6A; --rose-ink:#8E2A50; --rose-soft:#F9E6EE; --rose-2:#E86A96;
+    --green:#1F9E6A; --green-soft:#E4F3EC; --red:#D0604F; --amber:#BE8A2A; --amber-soft:#F6ECD6; --blue:#3E6394;
+    --wa:#25925a;
+    --serif:"Iowan Old Style","Palatino Linotype","Palatino",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+    padding:clamp(20px,4vw,48px) clamp(14px,4vw,48px)}
+  .ic{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round;flex:none}
+
+  .show-head{max-width:900px;margin:0 auto 8px}
+  .show-brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:600;font-size:1.1rem}
+  .show-mark{width:22px;height:22px;border-radius:7px;background:radial-gradient(120% 120% at 30% 20%,var(--rose-2),var(--rose-ink));box-shadow:0 2px 8px -2px var(--rose)}
+  .show-mark.sm{width:19px;height:19px;border-radius:6px}
+  .show-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rose-ink);margin:16px 0 4px}
+  .show-head h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.1;margin:0 0 .4rem}
+  .show-lede{font-size:1.05rem;line-height:1.55;color:var(--ink2);max-width:64ch}
+
+  .scr{max-width:1180px;margin:40px auto 0}
+  .scr-label{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:14px}
+  .scr-label .dot{width:8px;height:8px;border-radius:50%;background:var(--rose)}
+
+  .frame{background:var(--app-bg);border-radius:14px;overflow:hidden;border:1px solid var(--pg-line);box-shadow:0 24px 60px -34px rgba(60,20,45,.45)}
+  .bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:var(--sf);border-bottom:1px solid var(--line)}
+  .bar .d{width:11px;height:11px;border-radius:50%;background:var(--line)}
+  .bar .d:first-child{background:#E4897F}.bar .d:nth-child(2){background:#E9C07A}.bar .d:nth-child(3){background:#8FCBA0}
+  .url{margin-left:12px;font-family:var(--mono);font-size:12px;color:var(--ink3);background:var(--sf2);padding:5px 14px;border-radius:8px}
+
+  /* shell */
+  .app{display:grid;grid-template-columns:210px 1fr;min-height:520px}
+  .side{background:var(--sf);border-right:1px solid var(--line);padding:20px 15px;display:flex;flex-direction:column;gap:22px}
+  .logo{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--ink)}
+  .nav{display:flex;flex-direction:column;gap:3px}
+  .nav a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--ink2);cursor:pointer}
+  .nav a.on{background:var(--rose-soft);color:var(--rose-ink)}
+  .nav a.on .ic{stroke:var(--rose)}
+  .side-foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
+  .side-foot b{font-size:13px;display:block;color:var(--ink)}
+  .side-foot small{font-size:11px;color:var(--rose-ink)}
+  .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(140deg,var(--rose),var(--rose-ink));color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}
+  .av.sm{width:26px;height:26px;font-size:11px;display:inline-grid;vertical-align:middle;margin-right:8px}
+  .av.lg{width:54px;height:54px;font-size:20px}
+
+  .main{padding:22px 26px;overflow:hidden}
+  .phead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+  .phead h2{margin:0;font-family:var(--serif);font-size:1.55rem;font-weight:600;color:var(--ink)}
+  .phead .sub{margin:3px 0 0;font-size:13px;color:var(--ink3)}
+  .phead .ey{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-ink);margin:0 0 2px}
+  .phead-r{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .phead-cli{display:flex;gap:14px;align-items:center}
+  .cta{background:linear-gradient(140deg,var(--rose),var(--rose-ink));color:#fff;border:none;font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;box-shadow:0 8px 18px -8px var(--rose)}
+  .cta.ghost{background:none;color:var(--rose-ink);border:1px solid var(--rose);box-shadow:none}
+  .cta.wa{background:var(--wa);box-shadow:0 8px 18px -8px var(--wa)}
+  .cta.full{width:100%}
+  .seg{display:flex;gap:2px;background:var(--sf2);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .seg button{border:none;background:none;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink2);padding:6px 12px;border-radius:7px;cursor:pointer}
+  .seg button.on{background:var(--sf);color:var(--rose-ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .search{border:1px solid var(--line);border-radius:9px;padding:8px 13px;font-size:13px;background:var(--sf);color:var(--ink);min-width:200px}
+
+  /* tabelas */
+  .tbl{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--sf);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tbl thead th{text-align:left;font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);padding:11px 14px;border-bottom:1px solid var(--line);font-weight:600}
+  .tbl td{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:middle}
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl tbody tr:hover{background:var(--sf2)}
+  .tbl.mini{border:none;font-size:13px}
+  .tbl.mini td{padding:9px 2px;border-color:var(--line)}
+  .ta-r{text-align:right}
+  .tbl a{color:var(--rose-ink);font-weight:600;text-decoration:none}
+
+  .chip{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--sf2);color:var(--ink2);white-space:nowrap;border:1px solid var(--line)}
+  .chip-loc{background:#EAF0F7;color:var(--blue);border-color:#dbe6f2}
+  .chip-event{background:var(--rose-ink);color:#fff;border-color:var(--rose-ink)}
+  .chip-amber{background:var(--amber-soft);color:var(--amber);border-color:#eeddb8}
+  .chips{display:flex;gap:6px;margin-top:8px}
+  .in{color:var(--green)}.out{color:var(--red)}.pend{color:var(--amber)}
+
+  /* colunas / painéis */
+  .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+  .panel{background:var(--sf);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .panel.soft{background:var(--sf2)}
+  .panel h3{font-family:var(--serif);font-size:1.1rem;color:var(--ink);margin:0 0 12px}
+  .panel h3~h3{margin-top:20px}
+  .ev-row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .ev-row:last-child{border:none}
+  .ev-row .grow{flex:1}.ev-row b{font-size:13.5px}.ev-row small{display:block;color:var(--ink3);font-size:11.5px}
+  .ev-dot{color:var(--rose)}
+  .notes{font-size:13px;color:var(--ink2);line-height:1.7;margin:0}
+  .tot{display:flex;justify-content:space-between;align-items:baseline;padding-top:12px;margin-top:6px;border-top:2px solid var(--rose-soft)}
+  .tot b{font-family:var(--serif);font-size:1.4rem;color:var(--rose-ink)}
+  .money{display:flex;justify-content:space-between;font-size:13.5px;padding:8px 0;border-bottom:1px solid var(--line)}
+  .money b{font-variant-numeric:tabular-nums}
+  .goal{height:9px;background:var(--sf2);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin:12px 0 6px}
+  .goal-fill{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--rose-2))}
+  .goal-big{font-family:var(--serif);font-size:2.2rem;color:var(--rose-ink);margin:0}
+
+  /* semana */
+  .wk{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;height:400px}
+  .wk-col{background:var(--sf);border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}
+  .wk-col.today{border-color:var(--rose);box-shadow:inset 0 0 0 1px var(--rose)}
+  .wk-day{padding:9px 0;text-align:center;font-size:11px;color:var(--ink3);border-bottom:1px solid var(--line);font-weight:600}
+  .wk-day b{display:block;font-size:15px;color:var(--ink)}
+  .wk-col.today .wk-day b{color:var(--rose-ink)}
+  .ev{position:absolute;left:5px;right:5px;background:var(--rose-soft);border-left:3px solid var(--rose);border-radius:8px;padding:6px 8px}
+  .ev b{display:block;font-size:11px;color:var(--ink);line-height:1.2}.ev span{font-size:9.5px;color:var(--ink2)}
+  .e-mk{background:#FBEAF1;border-left-color:var(--rose)}.e-pt{background:#EAF0F7;border-left-color:#5E82B4}.e-ev{background:var(--rose-soft);border-left-color:var(--rose-ink)}
+  .wk-off{position:absolute;top:50%;left:0;right:0;text-align:center;font-size:11px;color:var(--ink3)}
+
+  /* kpis / chart */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+  .kpi{background:var(--sf);border:1px solid var(--line);border-radius:13px;padding:14px;display:flex;flex-direction:column;gap:4px}
+  .kpi.accent{background:linear-gradient(160deg,var(--rose-soft),var(--sf) 90%);border-color:var(--rose)}
+  .kpi .k-lbl{font-size:11px;color:var(--ink3)}
+  .kpi b{font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .kpi small{font-size:11px;color:var(--ink3)}.kpi small.up{color:var(--green);font-weight:600}
+  .fin-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+  .fin-grid .panel{margin-bottom:0}
+  .chart{width:100%;height:150px}
+  .chart line{stroke:var(--line)}.chart .area{fill:var(--rose);opacity:.12}
+  .chart .line{fill:none;stroke:var(--rose);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .chart .pt{fill:var(--rose);stroke:#fff;stroke-width:2.5}
+  .chart-x{display:flex;justify-content:space-between;margin-top:6px;font-size:10.5px;color:var(--ink3)}
+  .tx{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;font-weight:700;font-size:12px;margin-right:8px;vertical-align:middle}
+  .tx.in{background:var(--green-soft);color:var(--green)}.tx.out{background:#F7E7E4;color:var(--red)}
+
+  /* formulário */
+  .form-card{background:var(--sf);border:1px solid var(--line);border-radius:14px;padding:22px;max-width:560px}
+  .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:15px}
+  .fld>span{font-size:.8rem;font-weight:700;color:var(--ink2)}
+  .fld input,.fld select,.fld textarea{font-family:inherit;font-size:.95rem;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--sf);color:var(--ink);width:100%}
+  .fld-row{display:flex;gap:14px}.fld-row .fld{flex:1}
+  .form-actions{display:flex;align-items:center;gap:14px;margin-top:8px}
+  .cancel{color:var(--ink3);text-decoration:none;font-size:.9rem}
+
+  /* login */
+  .login-wrap,.pub{background:linear-gradient(160deg,var(--rose-soft),var(--app-bg));min-height:520px;display:grid;place-items:center;padding:30px}
+  .login-card{background:var(--sf);border:1px solid var(--line);border-radius:18px;padding:32px;width:340px;box-shadow:0 20px 50px -30px rgba(60,20,45,.4)}
+  .login-logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.5rem;font-weight:600;justify-content:center}
+  .login-sub{text-align:center;color:var(--ink3);font-size:.9rem;margin:6px 0 22px}
+  .login-foot{text-align:center;font-size:.85rem;color:var(--ink3);margin:16px 0 0}
+  .login-foot a,.pub a{color:var(--rose-ink);font-weight:600}
+
+  /* orçamento público */
+  .pub-card{background:var(--sf);border:1px solid var(--line);border-radius:18px;overflow:hidden;width:400px;box-shadow:0 24px 50px -28px rgba(60,20,45,.45)}
+  .pub-top{background:linear-gradient(160deg,var(--rose-ink),var(--rose));color:#fff;padding:22px 24px}
+  .pub-top .by{display:flex;align-items:center;gap:9px;font-size:12px;opacity:.92}
+  .pub-top .by .av{background:rgba(255,255,255,.25)}
+  .pub-top h3{margin:12px 0 2px;font-family:var(--serif);font-size:1.35rem;font-weight:600}
+  .pub-top p{margin:0;font-size:12px;opacity:.85}
+  .pub-body{padding:20px 24px}
+  .pub-item{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .pub-tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:2px solid var(--rose-soft)}
+  .pub-tot b{font-family:var(--serif);font-size:1.5rem;color:var(--rose-ink)}
+  .pub-sinal{background:var(--rose-soft);border-radius:12px;padding:12px 14px;margin:14px 0;font-size:12.5px;color:var(--rose-ink)}
+  .pub-val{text-align:center;font-size:10.5px;color:var(--ink3);margin:12px 0 0}
+
+  .show-foot{max-width:1180px;margin:36px auto 0;font-size:.82rem;color:var(--ink3);text-align:center}
+  ::selection{background:var(--rose);color:#fff}
+
+  @media(max-width:820px){ .app{grid-template-columns:1fr} .side{display:none} .cols,.fin-grid,.kpis{grid-template-columns:1fr} }
+</style>
+</body>
+</html>
