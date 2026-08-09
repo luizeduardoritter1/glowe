@@ -9,6 +9,7 @@
             <div>
                 <h2>{{ cliente.nome }}</h2>
                 <p class="sub">{{ cliente.telefone }}{% if cliente.data_nascimento %} · 🎂 {{ cliente.data_nascimento|date:"d/m" }}{% endif %}</p>
+                {% if cliente.tags_lista %}<div class="chips">{% for tag in cliente.tags_lista %}<span class="chip chip-event">{{ tag }}</span>{% endfor %}</div>{% endif %}
             </div>
         </div>
         <div class="phead-r">
@@ -17,6 +18,24 @@
             <a class="cta ghost" href="{% url 'excluir_cliente' cliente.id %}">🗑️ Excluir</a>
         </div>
     </div>
+
+    <div class="kpis">
+        <div class="kpi"><span class="k-lbl">Atendimentos</span><b>{{ cliente.agendamentos.count }}</b></div>
+        <div class="kpi"><span class="k-lbl">Total gasto</span><b>R$ {{ cliente.total_gasto }}</b></div>
+        <div class="kpi"><span class="k-lbl">Última visita</span><b>{{ cliente.ultima_visita|date:"d/m/Y"|default:"—" }}</b></div>
+    </div>
+
+    {% if cliente.proximo_evento %}
+    <div class="panel" style="border-color: var(--rose); background: var(--rose-soft);">
+        <div class="ev-row">
+            <span class="ev-dot">◆</span>
+            <div class="grow">
+                <b><a href="{% url 'detalhe_evento' cliente.proximo_evento.id %}">{{ cliente.proximo_evento.nome }}</a></b>
+                <small>Próximo evento · {{ cliente.proximo_evento.data_evento|date:"d/m/Y" }}</small>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     <div class="cols">
         <div class="panel">

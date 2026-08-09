@@ -4,6 +4,7 @@
 
 from django.db import models
 from django.urls import reverse
+from datetime import date
 import uuid
 
 
@@ -14,6 +15,7 @@ class Cliente(models.Model):
     telefone = models.CharField(max_length=20)         # texto curto
     email = models.EmailField(blank=True)              # e-mail; blank=True → opcional no formulário
     data_nascimento = models.DateField(blank=True, null=True)  # data; opcional (blank p/ formulário, null p/ banco)
+    tags = models.CharField(max_length=100, blank=True, help_text='Separe por vírgula: Noiva, VIP')  # etiquetas do cliente
     observacoes = models.TextField(blank=True)         # texto longo, opcional
     criado_em = models.DateTimeField(auto_now_add=True)  # preenche a data/hora sozinho ao criar o registro
 
@@ -37,6 +39,25 @@ class Cliente(models.Model):
         if not numero.startswith('55'):
             numero = '55' + numero
         return f'https://wa.me/{numero}'
+
+    @property
+    def tags_lista(self):
+        return [t.strip() for t in self.tags.split(',') if t.strip()]
+
+    @property
+    def total_gasto(self):
+        # Soma o valor dos atendimentos já concluídos.
+        concluidos = self.agendamentos.filter(status=Agendamento.StatusAgendamento.CONCLUIDO)
+        return sum((a.valor_total for a in concluidos), 0)
+
+    @property
+    def ultima_visita(self):
+        ultimo = self.agendamentos.filter(status=Agendamento.StatusAgendamento.CONCLUIDO).order_by('-data_hora').first()
+        return ultimo.data_hora if ultimo else None
+
+    @property
+    def proximo_evento(self):
+        return self.evento_set.filter(data_evento__gte=date.today()).order_by('data_evento').first()
 
 
 # ═══════════════ ITEM DE CATÁLOGO ═══════════════
