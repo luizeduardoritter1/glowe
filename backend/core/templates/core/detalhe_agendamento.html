@@ -10,6 +10,7 @@
             <p class="sub">{{ agendamento.data_hora|date:"d/m/Y H:i" }} · {{ agendamento.get_status_display }}</p>
         </div>
         <div class="phead-r">
+            {% if agendamento.whatsapp_lembrete_link %}<a class="cta wa" href="{{ agendamento.whatsapp_lembrete_link }}" target="_blank" rel="noopener">💬 Lembrar no WhatsApp</a>{% endif %}
             <a class="cta ghost" href="{% url 'editar_agendamento' agendamento.id %}">✏️ Editar</a>
             <a class="cta ghost" href="{% url 'excluir_agendamento' agendamento.id %}">🗑️ Excluir</a>
         </div>

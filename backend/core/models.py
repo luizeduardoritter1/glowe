@@ -5,6 +5,8 @@
 from django.db import models
 from django.urls import reverse
 from datetime import date
+from django.utils import timezone
+from urllib.parse import quote
 import uuid
 
 
@@ -151,6 +153,18 @@ class Agendamento(models.Model):
         for item in self.itens.all():   # percorre cada item ligado a este agendamento
             valor_total += item.preco   # acumula o preço no total
         return valor_total
+
+    @property
+    def whatsapp_lembrete_link(self):
+        # Link wa.me com mensagem de lembrete já preenchida (envio semiautomático).
+        numero = ''.join(c for c in self.cliente.telefone if c.isdigit())
+        if not numero:
+            return ''
+        if not numero.startswith('55'):
+            numero = '55' + numero
+        quando = timezone.localtime(self.data_hora).strftime('%d/%m às %H:%M')
+        msg = f'Oi {self.cliente.nome}! Passando pra confirmar seu horário no dia {quando}. Qualquer coisa, me avisa. 💄'
+        return f'https://wa.me/{numero}?text={quote(msg)}'
 
     def get_absolute_url(self):
         return reverse('detalhe_agendamento', kwargs={'id': self.id})
