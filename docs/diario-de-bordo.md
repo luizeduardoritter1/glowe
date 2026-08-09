@@ -346,3 +346,36 @@ O contêiner opcional resolve os dois: simples por padrão, poderoso quando prec
 
 **Próximos passos**
 - Fazer o CRUD do **Agendamento** (o coração do produto), que traz campos de relacionamento (escolher cliente e itens) e um campo de data/hora.
+
+---
+
+## [08/08/2026] — Sprint 2: CRUD do Agendamento, refactors (CBV + DRY) e Evento
+
+**O que fiz hoje**
+- Completei o **CRUD do Agendamento** (criar, detalhe, editar, excluir), com campos de relacionamento (cliente, itens) e data/hora.
+- Adotei um **fluxo de trabalho assistido por IA com papéis definidos**: criei 3 skills no projeto (`dev-senior`, `arquiteto-sistemas`, `tech-lead`) e passei a IA a "assumir o teclado", enquanto eu reviso e aprendo lendo o código. (As skills ficam só na minha máquina, fora do repositório.)
+- **CRUD do Catálogo** (ItemCatalogo) completo.
+- **Refactor:** migrei todas as views de CRUD para **Class-Based Views (CBV)**.
+- **Refactor:** unifiquei os templates duplicados num `form.html` e num `confirmar_exclusao.html` **genéricos** (DRY).
+- **CRUD do Evento** completo — o detalhe mostra os agendamentos vinculados (o contêiner do modelo híbrido).
+
+**O que aprendi**
+- **Class-Based Views**: `ListView`, `DetailView`, `CreateView`, `UpdateView`, `DeleteView`. Elimina o código repetido do CRUD — só se configura (`model`, `form_class`, `template_name`, `context_object_name`).
+- **`get_absolute_url()`** no model: define pra onde o Create/Update redireciona após salvar.
+- **DRY nos templates**: um `confirmar_exclusao.html` genérico com `{{ object }}` (o `__str__`) e `{{ object.get_absolute_url }}` serve pra qualquer model.
+- `get_tipo_display` (rótulo bonito de um campo `choices`) e os filtros `|yesno` e `|default`.
+- `related_name` em dois FKs diferentes apontando pro mesmo model reverso (`cliente.agendamentos` e `evento.agendamentos`) — sem conflito, porque os "donos" são models diferentes.
+- Fluxo profissional de entrega: implementar → `python manage.py check` → smoke test (renderizar as páginas) → commit convencional → push.
+
+**Dificuldades / como resolvi**
+- Na migração pra CBV, as generic views esperam `<int:pk>` na URL, mas as nossas usam `<int:id>`. Resolvi com `pk_url_kwarg = 'id'` em cada view — assim não precisei mexer em URLs nem templates.
+- Bug de `ImportError` (form inexistente) e mismatches de nome (template/rota) reforçaram o padrão: "some sem dar erro" = desconfiar de nome/digitação.
+
+**Decisões**
+- Adotei **CBV** e **templates genéricos** como base, antes de crescer o número de entidades.
+- Separei o **orçamento enviável** numa issue própria (#10): é feature maior (Fase 2), não CRUD. Board honesto — só fecho o que terminei de fato.
+- Skills de IA versionadas **só localmente** (fora do repositório).
+
+**Próximos passos**
+- **#9** — estilizar as páginas com a identidade visual do Glowe.
+- **#10** — orçamento enviável (Fase 2).
