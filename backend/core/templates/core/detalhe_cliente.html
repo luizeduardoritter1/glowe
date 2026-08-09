@@ -12,6 +12,7 @@
             </div>
         </div>
         <div class="phead-r">
+            {% if cliente.whatsapp_link %}<a class="cta wa" href="{{ cliente.whatsapp_link }}" target="_blank" rel="noopener">💬 WhatsApp</a>{% endif %}
             <a class="cta ghost" href="{% url 'editar_cliente' cliente.id %}">✏️ Editar</a>
             <a class="cta ghost" href="{% url 'excluir_cliente' cliente.id %}">🗑️ Excluir</a>
         </div>

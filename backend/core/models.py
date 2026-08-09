@@ -28,6 +28,16 @@ class Cliente(models.Model):
         # Para onde as CBVs (Create/Update) redirecionam após salvar.
         return reverse('detalhe_cliente', kwargs={'id': self.id})
 
+    @property
+    def whatsapp_link(self):
+        # Monta o link wa.me a partir do telefone (só dígitos + DDI 55 do Brasil).
+        numero = ''.join(c for c in self.telefone if c.isdigit())
+        if not numero:
+            return ''
+        if not numero.startswith('55'):
+            numero = '55' + numero
+        return f'https://wa.me/{numero}'
+
 
 # ═══════════════ ITEM DE CATÁLOGO ═══════════════
 # Um item vendável: serviço (maquiagem) OU adicional (coffee break). Unificado num model só.
